@@ -1512,7 +1512,7 @@ a {
 /* --- Accessibility Bar --- */
 .a11y-toggle {
   position: fixed;
-  bottom: 70px;
+  bottom: 76px;
   right: var(--space-4);
   z-index: 300;
   width: 40px;
@@ -2715,7 +2715,7 @@ select:focus:not(:focus-visible) {
 /* --- Voice Assistant FAB & Panel --- */
 .voice-fab {
   position: fixed;
-  bottom: 90px;
+  bottom: 128px;
   right: 16px;
   width: 56px;
   height: 56px;

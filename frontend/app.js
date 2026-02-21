@@ -1517,8 +1517,9 @@ function updateContinueButton() {
 btnContinue.addEventListener('click', async () => {
   if (state.currentPhase === 0) {
     showSpinner("Initializing secure session...");
-    await api.startSession(state.language, state.accountType);
-    hideSpinner();
+    // Fire-and-forget so UI is not blocked if backend is unreachable
+    api.startSession(state.language, state.accountType).catch(e => console.warn('Session start (non-blocking):', e));
+    setTimeout(hideSpinner, 800);
   }
 
   if (state.currentPhase === 2 && !validatePhase2(true)) return;
@@ -1575,12 +1576,14 @@ $('#kycCards').addEventListener('click', (e) => {
 $('#btnAllowConsent').addEventListener('click', async () => {
   $('#consentBox').classList.remove('visible');
 
-  // Archive consent artifact in backend
-  await api.archiveConsent(
-    state.selectedKyc === 'aadhaar' ? 'Aadhaar' : 'Identity',
-    $('#consentText').textContent.trim(),
-    { kyc_method: state.selectedKyc }
-  );
+  // Archive consent artifact in backend (fire-and-forget so UI is not blocked)
+  try {
+    api.archiveConsent(
+      state.selectedKyc === 'aadhaar' ? 'Aadhaar' : 'Identity',
+      $('#consentText')?.textContent?.trim() || 'User consented',
+      { kyc_method: state.selectedKyc }
+    ).catch(e => console.warn('Consent archive (non-blocking):', e));
+  } catch (e) { console.warn('Consent archive skipped:', e); }
 
   if (state.selectedKyc === 'smartscan') {
     $('#smartScanUI').style.display = 'block';
