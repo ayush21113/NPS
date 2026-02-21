@@ -2205,149 +2205,238 @@ voicePanelClose.addEventListener('click', () => {
   voicePanel.classList.remove('visible');
 });
 
-// NPS Knowledge Base for chatbot
+
+// NPS Knowledge Base for chatbot — Multilingual
 const npsKnowledge = {
-  'what is nps': 'NPS (National Pension System) is a government-sponsored pension scheme launched by PFRDA. It allows you to build a retirement corpus by investing regularly. Your money is managed by professional Pension Fund Managers (PFMs) and invested across Equity, Corporate Bonds, and Government Securities.',
-  'nps': 'NPS is India\'s premier retirement savings scheme regulated by PFRDA. You get a unique PRAN (Permanent Retirement Account Number) and can invest in Equity, Corporate Bonds, and Govt Securities. The minimum contribution is just ₹500!',
-  'how to open account': 'Opening an NPS account is easy! You need: 1️⃣ Your Aadhaar or PAN for KYC verification, 2️⃣ A bank account for contributions, 3️⃣ Nominee details. You can complete the entire process digitally in under 5 minutes right here!',
-  'open account': 'To open an NPS account: Select your account type (Individual/Corporate), complete KYC via Aadhaar/PAN/CKYC, choose your investment preferences, and make a minimum contribution of ₹500. Your PRAN will be generated instantly!',
-  'tax benefits': 'NPS offers excellent tax benefits: ✅ Section 80CCD(1): Up to ₹1.5 lakh (part of 80C limit), ✅ Section 80CCD(1B): Additional ₹50,000 (exclusive to NPS), ✅ Section 80CCD(2): Employer contribution (up to 10% of salary) — no upper limit. Total potential deduction: ₹2 lakh+!',
-  'what are tax benefits': 'With NPS, you can save up to ₹2 lakh in taxes annually! Under 80CCD(1B), you get an exclusive ₹50,000 deduction above the standard ₹1.5L under 80C. Employer contributions under 80CCD(2) are also tax-free up to 10% of your Basic+DA.',
-  'what is pran': 'PRAN (Permanent Retirement Account Number) is your unique 12-digit NPS account number. It stays with you for life — even if you change jobs, cities, or states. Think of it as your pension identity, like an Aadhaar for retirement!',
-  'pran': 'PRAN is your Permanent Retirement Account Number — a lifelong 12-digit ID for your NPS pension account. Once generated, it never changes. You can use it with any Point of Presence (PoP) across India.',
-  'minimum contribution': 'The minimum contribution for NPS is: 💰 Tier I: ₹500 per contribution (₹1,000 minimum per year), 💰 Tier II: ₹250 per contribution (no minimum annual). You can contribute as much as you want — there is no upper limit!',
-  'min amount': 'Minimum contribution: ₹500 per transaction for Tier I, ₹250 for Tier II. Annual minimum for Tier I is ₹1,000. No upper limit on contributions!',
-  'tier 1 tier 2': 'Tier I is your primary pension account with tax benefits but limited withdrawals. Tier II is a voluntary savings account with full flexibility — withdraw anytime, no lock-in. You must have Tier I to open Tier II.',
-  'tier': 'NPS has two tiers: Tier I (mandatory pension with tax benefits, withdrawal restrictions until 60) and Tier II (voluntary savings, anytime withdrawal, no tax benefits except for govt employees).',
-  'withdrawal': 'At age 60, you can withdraw up to 60% as lump sum (tax-free) and the remaining 40% is used to buy an annuity for monthly pension. Partial withdrawals (up to 25%) are allowed after 3 years for specific purposes like education, medical treatment, or home purchase.',
-  'kyc': 'KYC (Know Your Customer) verification can be done via: 1️⃣ CKYC Registry lookup, 2️⃣ Aadhaar-based eKYC (OTP), 3️⃣ Bank CBS verification, 4️⃣ AI Smart Scan (document OCR), or 5️⃣ DigiLocker document fetch. All methods are digital — no physical visit needed!',
-  'digilocker': 'DigiLocker is a Government of India digital document storage platform. With NPS, you can pull your verified Aadhaar, PAN, and other documents directly from DigiLocker — no need to upload or scan anything!',
-  'upi': 'You can make NPS contributions via UPI! We support: GPay, PhonePe, Paytm, BHIM, and all UPI apps. UPI Lite is also available for contributions under ₹1,000 — no PIN required!',
-  'upi lite': 'UPI Lite allows small-value NPS contributions (under ₹1,000) without entering your UPI PIN. It works offline too! Perfect for quick, hassle-free pension top-ups.',
-  'fund manager': 'NPS offers 7 Pension Fund Managers (PFMs): SBI, LIC, UTI, HDFC, ICICI, Kotak, and Aditya Birla. You can choose any PFM and switch once per year. All PFMs are regulated by PFRDA.',
-  'risk': 'NPS offers two investment approaches: 🔄 Auto Choice (Lifecycle Fund) — automatically reduces equity as you age, 🎯 Active Choice — you pick your own allocation (up to 75% Equity). Higher equity = higher potential returns but more risk.',
-  'annuity': 'When you retire at 60, at least 40% of your NPS corpus must be used to buy an annuity from an empaneled Annuity Service Provider (ASP). The annuity gives you a guaranteed monthly pension for life.',
-  'help': 'I can help you with: 📌 What is NPS, 📌 How to open an account, 📌 Tax benefits, 📌 Contribution amounts, 📌 Tier I vs Tier II, 📌 KYC methods, 📌 Payment options (UPI/UPI Lite), 📌 Withdrawal rules, 📌 Fund managers. Just ask!',
-  'hello': 'Hello! 👋 Welcome to NPS Assistant. I can help you with account opening, KYC queries, tax benefits, investment choices, and much more. What would you like to know?',
-  'hi': 'Hi there! 👋 I\'m your NPS pension assistant. Ask me anything about opening an NPS account, tax savings, or retirement planning!',
+    en: {
+        'what is nps': 'NPS (National Pension System) is a government-sponsored pension scheme launched by PFRDA. It allows you to build a retirement corpus by investing regularly. Your money is managed by professional Pension Fund Managers (PFMs) and invested across Equity, Corporate Bonds, and Government Securities.',
+        'nps': 'NPS is India\'s premier retirement savings scheme regulated by PFRDA. You get a unique PRAN (Permanent Retirement Account Number) and can invest in Equity, Corporate Bonds, and Govt Securities. The minimum contribution is just ₹500!',
+        'how to open account': 'Opening an NPS account is easy! You need: 1️⃣ Your Aadhaar or PAN for KYC verification, 2️⃣ A bank account for contributions, 3️⃣ Nominee details. You can complete the entire process digitally in under 5 minutes right here!',
+        'open account': 'To open an NPS account: Select your account type (Individual/Corporate), complete KYC via Aadhaar/PAN/CKYC, choose your investment preferences, and make a minimum contribution of ₹500. Your PRAN will be generated instantly!',
+        'tax benefits': 'NPS offers excellent tax benefits: ✅ Section 80CCD(1): Up to ₹1.5 lakh (part of 80C limit), ✅ Section 80CCD(1B): Additional ₹50,000 (exclusive to NPS), ✅ Section 80CCD(2): Employer contribution (up to 10% of salary) — no upper limit. Total potential deduction: ₹2 lakh+!',
+        'what is pran': 'PRAN (Permanent Retirement Account Number) is your unique 12-digit NPS account number. It stays with you for life — even if you change jobs, cities, or states.',
+        'minimum contribution': 'The minimum contribution for NPS is: 💰 Tier I: ₹500 per contribution (₹1,000 minimum per year), 💰 Tier II: ₹250 per contribution (no minimum annual). No upper limit!',
+        'tier 1 tier 2': 'Tier I is your primary pension account with tax benefits but limited withdrawals. Tier II is a voluntary savings account — withdraw anytime, no lock-in. You must have Tier I to open Tier II.',
+        'withdrawal': 'At age 60, you can withdraw up to 60% as lump sum (tax-free) and the remaining 40% is used to buy an annuity for monthly pension.',
+        'kyc': 'KYC verification can be done via: 1️⃣ CKYC Registry, 2️⃣ Aadhaar eKYC (OTP), 3️⃣ Bank CBS verification, 4️⃣ AI Smart Scan (OCR), or 5️⃣ DigiLocker. All digital!',
+        'upi': 'You can make NPS contributions via UPI! We support GPay, PhonePe, Paytm, BHIM, and all UPI apps.',
+        'fund manager': 'NPS offers 7 Pension Fund Managers: SBI, LIC, UTI, HDFC, ICICI, Kotak, and Aditya Birla. Switch once per year.',
+        'risk': 'NPS offers: 🔄 Auto Choice (Lifecycle Fund) — auto reduces equity with age, 🎯 Active Choice — pick your own allocation (up to 75% Equity).',
+        'help': 'I can help with: 📌 What is NPS, 📌 Account opening, 📌 Tax benefits, 📌 Contributions, 📌 Tier I vs II, 📌 KYC, 📌 Payments, 📌 Withdrawals. Just ask!',
+        'hello': 'Hello! 👋 Welcome to NPS Assistant. Ask me about accounts, KYC, tax benefits, investments, and more!',
+        'hi': 'Hi there! 👋 I\'m your NPS pension assistant. Ask me anything about NPS!',
+        '_default': "I'm not sure about that, but I can help with NPS accounts, KYC, tax benefits, investments, and payments. Try 'What is NPS?' or type 'help'! 📚"
+    },
+    hi: {
+        'nps क्या है': 'NPS (राष्ट्रीय पेंशन योजना) PFRDA द्वारा शुरू की गई सरकारी पेंशन योजना है। इसमें नियमित निवेश करके रिटायरमेंट कोष बनाया जा सकता है। आपका पैसा इक्विटी, कॉर्पोरेट बॉन्ड और सरकारी प्रतिभूतियों में निवेश किया जाता है।',
+        'nps': 'NPS भारत की प्रमुख रिटायरमेंट बचत योजना है, PFRDA द्वारा नियंत्रित। आपको एक अद्वितीय PRAN मिलता है। न्यूनतम योगदान सिर्फ ₹500!',
+        'खाता कैसे खोलें': 'NPS खाता खोलना आसान है! चाहिए: 1️⃣ आधार या PAN, 2️⃣ बैंक खाता, 3️⃣ नॉमिनी विवरण। 5 मिनट में डिजिटल प्रक्रिया!',
+        'कर लाभ': 'NPS में उत्कृष्ट कर लाभ: ✅ धारा 80CCD(1): ₹1.5 लाख तक, ✅ 80CCD(1B): अतिरिक्त ₹50,000, ✅ 80CCD(2): नियोक्ता योगदान। कुल: ₹2 लाख+!',
+        'pran क्या है': 'PRAN आपका अद्वितीय 12-अंकीय NPS खाता नंबर है। यह जीवन भर आपके साथ रहता है!',
+        'न्यूनतम योगदान': 'NPS में न्यूनतम: 💰 टियर I: ₹500 प्रति योगदान (सालाना ₹1,000), 💰 टियर II: ₹250। कोई ऊपरी सीमा नहीं!',
+        'निकासी': '60 वर्ष पर, 60% एकमुश्त (कर-मुक्त) और 40% मासिक पेंशन के लिए एन्युटी में।',
+        'kyc': 'KYC सत्यापन: 1️⃣ CKYC, 2️⃣ आधार eKYC, 3️⃣ बैंक CBS, 4️⃣ AI स्मार्ट स्कैन, 5️⃣ DigiLocker। सब डिजिटल!',
+        'मदद': 'मैं मदद कर सकता हूँ: 📌 NPS क्या है, 📌 खाता खोलें, 📌 कर लाभ, 📌 योगदान, 📌 KYC, 📌 भुगतान, 📌 निकासी। पूछें!',
+        'नमस्ते': 'नमस्ते! 👋 NPS सहायक में स्वागत है। खाता, KYC, कर लाभ बारे में पूछें!',
+        'हैलो': 'हैलो! 👋 मैं आपका NPS पेंशन सहायक हूँ। कुछ भी पूछें!',
+        '_default': 'इसके बारे में जानकारी नहीं है, लेकिन NPS खाता, KYC, कर लाभ, निवेश में मदद कर सकता हूँ। "NPS क्या है?" पूछें या "मदद" टाइप करें! 📚'
+    },
+    gu: {
+        'nps શું છે': 'NPS (રાષ્ટ્રીય પેન્શન યોજના) PFRDA દ્વારા શરૂ કરાયેલ સરકારી પેન્શન યોજના છે। નિયમિત રોકાણ દ્વારા નિવૃત્તિ ભંડોળ બનાવી શકાય છે।',
+        'nps': 'NPS ભારતની અગ્રણી નિવૃત્તિ બચત યોજના છે। PFRDA દ્વારા નિયંત્રિત। ન્યૂનતમ યોગદાન ₹500!',
+        'ખાતું કેવી રીતે ખોલવું': 'NPS ખાતું ખોલવું સરળ છે! 1️⃣ આધાર/PAN, 2️⃣ બેંક ખાતું, 3️⃣ નોમિની. 5 મિનિટમાં ડિજિટલ!',
+        'કર લાભ': 'NPS કર લાભ: ✅ 80CCD(1): ₹1.5 લાખ, ✅ 80CCD(1B): ₹50,000 વધારાના, ✅ 80CCD(2): એમ્પ્લોયર. કુલ: ₹2 લાખ+!',
+        'ઉપાડ': '60 વર્ષે 60% એકસાથે (કર-મુક્ત), 40% માસિક પેન્શન માટે એન્ન્યુઇટી.',
+        'kyc': 'KYC: 1️⃣ CKYC, 2️⃣ આધાર eKYC, 3️⃣ બેંક CBS, 4️⃣ AI સ્માર્ટ સ્કેન, 5️⃣ DigiLocker. બધું ડિજિટલ!',
+        'મદદ': 'હું મદદ કરી શકું: 📌 NPS, 📌 ખાતું, 📌 કર લાભ, 📌 યોગદાન, 📌 KYC, 📌 ચુકવણી, 📌 ઉપાડ. પૂછો!',
+        'નમસ્તે': 'નમસ્તે! 👋 NPS સહાયકમાં સ્વાગત છે. ખાતું, KYC, કર લાભ વિશે પૂછો!',
+        '_default': 'આ વિશે ખાતરી નથી, પણ NPS ખાતા, KYC, કર લાભ, રોકાણ વિશે મદદ કરી શકું. "NPS શું છે?" પૂછો! 📚'
+    },
+    ta: {
+        'nps என்றால் என்ன': 'NPS (தேசிய ஓய்வூதியத் திட்டம்) PFRDA ஆல் தொடங்கப்பட்ட அரசு ஓய்வூதியத் திட்டம். தொடர்ந்து முதலீடு செய்து ஓய்வுக் கால நிதியை உருவாக்கலாம்.',
+        'nps': 'NPS இந்தியாவின் முதன்மை ஓய்வுக்காலச் சேமிப்புத் திட்டம். PFRDA நிர்வகிக்கிறது. குறைந்தபட்சம் ₹500!',
+        'கணக்கு திறப்பது எப்படி': 'NPS கணக்கு திறப்பது எளிது! 1️⃣ ஆதார்/PAN, 2️⃣ வங்கிக் கணக்கு, 3️⃣ நாமினி. 5 நிமிடத்தில் டிஜிட்டல்!',
+        'வரிச் சலுகை': 'NPS வரிச் சலுகை: ✅ 80CCD(1): ₹1.5 லட்சம், ✅ 80CCD(1B): ₹50,000 கூடுதல், ✅ 80CCD(2): முதலாளி. மொத்தம்: ₹2 லட்சம்+!',
+        'திரும்பப் பெறுதல்': '60 வயதில் 60% ஒரே தொகை (வரி இல்லை), 40% மாத ஓய்வூதியத்திற்கு ஆண்ணுயிட்டி.',
+        'kyc': 'KYC: 1️⃣ CKYC, 2️⃣ ஆதார் eKYC, 3️⃣ வங்கி CBS, 4️⃣ AI ஸ்மார்ட் ஸ்கேன், 5️⃣ DigiLocker. அனைத்தும் டிஜிட்டல்!',
+        'உதவி': 'நான் உதவ முடியும்: 📌 NPS, 📌 கணக்கு, 📌 வரிச் சலுகை, 📌 பங்களிப்பு, 📌 KYC, 📌 கட்டணம். கேளுங்கள்!',
+        'வணக்கம்': 'வணக்கம்! 👋 NPS உதவியாளர். கணக்கு, KYC, வரிச் சலுகை பற்றி கேளுங்கள்!',
+        '_default': 'இதைப் பற்றி தெரியவில்லை, ஆனால் NPS, KYC, வரி, முதலீடு பற்றி உதவ முடியும். "NPS என்ன?" கேளுங்கள்! 📚'
+    },
+    te: {
+        'nps అంటే ఏమిటి': 'NPS (జాతీయ పెన్షన్ పథకం) PFRDA ద్వారా ప్రారంభించబడిన ప్రభుత్వ పెన్షన్ పథకం. క్రమంగా పెట్టుబడి పెట్టి పదవీ విరమణ నిధి నిర్మించవచ్చు.',
+        'nps': 'NPS భారతదేశపు ప్రధాన పదవీ విరమణ పొదుపు పథకం. PFRDA నియంత్రిస్తుంది. కనీసం ₹500!',
+        'ఖాతా ఎలా తెరవాలి': 'NPS ఖాతా తెరవడం సులభం! 1️⃣ ఆధార్/PAN, 2️⃣ బ్యాంక్ ఖాతా, 3️⃣ నామినీ. 5 నిమిషాల్లో డిజిటల్!',
+        'పన్ను ప్రయోజనాలు': 'NPS పన్ను: ✅ 80CCD(1): ₹1.5 లక్షలు, ✅ 80CCD(1B): ₹50,000 అదనం, ✅ 80CCD(2): యజమాని. మొత్తం: ₹2 లక్షలు+!',
+        'ఉపసంహరణ': '60 ఏళ్లకు 60% ఒకేసారి (పన్ను లేదు), 40% నెలవారీ పెన్షన్ కోసం ఆన్యుటీ.',
+        'kyc': 'KYC: 1️⃣ CKYC, 2️⃣ ఆధార్ eKYC, 3️⃣ బ్యాంక్ CBS, 4️⃣ AI స్మార్ట్ స్కాన్, 5️⃣ DigiLocker. అన్నీ డిజిటల్!',
+        'సహాయం': 'సహాయం: 📌 NPS, 📌 ఖాతా, 📌 పన్ను, 📌 విరాళాలు, 📌 KYC, 📌 చెల్లింపులు. అడగండి!',
+        'హలో': 'హలో! 👋 NPS సహాయకం. ఖాతా, KYC, పన్ను గురించి అడగండి!',
+        '_default': 'దీని గురించి తెలియదు, కానీ NPS, KYC, పన్ను, పెట్టుబడి గురించి సహాయం చేయగలను. "NPS అంటే?" అడగండి! 📚'
+    },
+    kn: {
+        'nps ಏನು': 'NPS (ರಾಷ್ಟ್ರೀಯ ಪಿಂಚಣಿ ಯೋಜನೆ) PFRDA ಆರಂಭಿಸಿದ ಸರ್ಕಾರಿ ಪಿಂಚಣಿ ಯೋಜನೆ. ನಿಯಮಿತ ಹೂಡಿಕೆಯಿಂದ ನಿವೃತ್ತಿ ನಿಧಿ ರಚಿಸಬಹುದು.',
+        'nps': 'NPS ಭಾರತದ ಪ್ರಮುಖ ನಿವೃತ್ತಿ ಉಳಿತಾಯ ಯೋಜನೆ. PFRDA ನಿಯಂತ್ರಿಸುತ್ತದೆ. ಕನಿಷ್ಠ ₹500!',
+        'ಖಾತೆ ತೆರೆಯುವುದು ಹೇಗೆ': 'NPS ಖಾತೆ ಸುಲಭ! 1️⃣ ಆಧಾರ್/PAN, 2️⃣ ಬ್ಯಾಂಕ್ ಖಾತೆ, 3️⃣ ನಾಮಿನಿ. 5 ನಿಮಿಷದಲ್ಲಿ ಡಿಜಿಟಲ್!',
+        'ತೆರಿಗೆ ಪ್ರಯೋಜನ': 'NPS ತೆರಿಗೆ: ✅ 80CCD(1): ₹1.5 ಲಕ್ಷ, ✅ 80CCD(1B): ₹50,000 ಹೆಚ್ಚುವರಿ, ✅ 80CCD(2): ಉದ್ಯೋಗದಾತ. ಒಟ್ಟು: ₹2 ಲಕ್ಷ+!',
+        'ಹಿಂಪಡೆಯುವಿಕೆ': '60 ವರ್ಷಕ್ಕೆ 60% ಒಂದೇ ಬಾರಿ (ತೆರಿಗೆ ಇಲ್ಲ), 40% ಮಾಸಿಕ ಪಿಂಚಣಿಗೆ ಆನ್ಯುಟಿ.',
+        'kyc': 'KYC: 1️⃣ CKYC, 2️⃣ ಆಧಾರ್ eKYC, 3️⃣ ಬ್ಯಾಂಕ್ CBS, 4️⃣ AI ಸ್ಮಾರ್ಟ್ ಸ್ಕ್ಯಾನ್, 5️⃣ DigiLocker. ಎಲ್ಲಾ ಡಿಜಿಟಲ್!',
+        'ಸಹಾಯ': 'ಸಹಾಯ: 📌 NPS, 📌 ಖಾತೆ, 📌 ತೆರಿಗೆ, 📌 ಕೊಡುಗೆ, 📌 KYC, 📌 ಪಾವತಿ. ಕೇಳಿ!',
+        'ನಮಸ್ಕಾರ': 'ನಮಸ್ಕಾರ! 👋 NPS ಸಹಾಯಕ. ಖಾತೆ, KYC, ತೆರಿಗೆ ಬಗ್ಗೆ ಕೇಳಿ!',
+        '_default': 'ಇದರ ಬಗ್ಗೆ ಖಚಿತವಿಲ್ಲ, ಆದರೆ NPS, KYC, ತೆರಿಗೆ, ಹೂಡಿಕೆ ಬಗ್ಗೆ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ. "NPS ಏನು?" ಕೇಳಿ! 📚'
+    },
+    or: {
+        'nps କଣ': 'NPS (ଜାତୀୟ ପେନସନ ଯୋଜନା) PFRDA ଦ୍ୱାରା ଆରମ୍ଭ ସରକାରୀ ପେନସନ ଯୋଜନା। ନିୟମିତ ବିନିଯୋଗ ଦ୍ୱାରା ଅବସର ପାଣ୍ଠି ତିଆରି କରାଯାଏ।',
+        'nps': 'NPS ଭାରତର ପ୍ରମୁଖ ଅବସର ସଞ୍ଚୟ ଯୋଜନା। PFRDA ନିୟନ୍ତ୍ରିତ। ସର୍ବନିମ୍ନ ₹500!',
+        'ଖାତା ଖୋଲିବା': 'NPS ଖାତା ସହଜ! 1️⃣ ଆଧାର/PAN, 2️⃣ ବ୍ୟାଙ୍କ ଖାତା, 3️⃣ ନମିନି। 5 ମିନିଟରେ ଡିଜିଟାଲ!',
+        'କର ସୁବିଧା': 'NPS କର: ✅ 80CCD(1): ₹1.5 ଲକ୍ଷ, ✅ 80CCD(1B): ₹50,000 ଅତିରିକ୍ତ, ✅ 80CCD(2): ନିୟୋଜକ। ମୋଟ: ₹2 ଲକ୍ଷ+!',
+        'ଉଠାଣ': '60 ବର୍ଷରେ 60% ଏକତ୍ର (କର ମୁକ୍ତ), 40% ମାସିକ ପେନସନ ପାଇଁ ଆନୁଇଟି।',
+        'kyc': 'KYC: 1️⃣ CKYC, 2️⃣ ଆଧାର eKYC, 3️⃣ ବ୍ୟାଙ୍କ CBS, 4️⃣ AI ସ୍ମାର୍ଟ ସ୍କାନ, 5️⃣ DigiLocker। ସମସ୍ତ ଡିଜିଟାଲ!',
+        'ସାହାଯ୍ୟ': 'ସାହାଯ୍ୟ: 📌 NPS, 📌 ଖାତା, 📌 କର, 📌 ଯୋଗଦାନ, 📌 KYC, 📌 ଦେୟ। ପଚାରନ୍ତୁ!',
+        'ନମସ୍କାର': 'ନମସ୍କାର! 👋 NPS ସହାୟକ। ଖାତା, KYC, କର ବିଷୟରେ ପଚାରନ୍ତୁ!',
+        '_default': 'ଏହା ବିଷୟରେ ଜଣାନାହିଁ, କିନ୍ତୁ NPS, KYC, କର, ବିନିଯୋଗ ବିଷୟରେ ସାହାଯ୍ୟ କରିପାରିବି। "NPS କଣ?" ପଚାରନ୍ତୁ! 📚'
+    }
+};
+
+// Language code to speech recognition locale mapping
+const langToSpeechLocale = {
+    en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN', ta: 'ta-IN', te: 'te-IN', kn: 'kn-IN', or: 'or-IN'
 };
 
 function getBotResponse(query) {
-  const q = query.toLowerCase().trim();
+    const lang = state.language || 'en';
+    const kb = npsKnowledge[lang] || npsKnowledge['en'];
+    const q = query.toLowerCase().trim();
 
-  // Direct match
-  if (npsKnowledge[q]) return npsKnowledge[q];
+    // Direct match in current language
+    if (kb[q]) return kb[q];
 
-  // Keyword matching
-  let bestMatch = null;
-  let bestScore = 0;
-  for (const [key, value] of Object.entries(npsKnowledge)) {
-    const keywords = key.split(' ');
-    let score = 0;
-    keywords.forEach(kw => {
-      if (q.includes(kw)) score++;
-    });
-    if (score > bestScore) {
-      bestScore = score;
-      bestMatch = value;
+    // Keyword matching in current language
+    let bestMatch = null;
+    let bestScore = 0;
+    for (const [key, value] of Object.entries(kb)) {
+        if (key === '_default') continue;
+        const keywords = key.split(' ');
+        let score = 0;
+        keywords.forEach(kw => {
+            if (q.includes(kw)) score++;
+        });
+        if (score > bestScore) {
+            bestScore = score;
+            bestMatch = value;
+        }
     }
-  }
 
-  if (bestScore > 0) return bestMatch;
+    if (bestScore > 0) return bestMatch;
 
-  // Default response
-  return "I'm not sure about that, but I can help with NPS accounts, KYC, tax benefits, investments, and payments. Try asking 'What is NPS?' or 'How to open account?' or type 'help' for all topics! 📚";
+    // Also try English KB as fallback for English terms like 'NPS', 'KYC'
+    if (lang !== 'en') {
+        const enKb = npsKnowledge['en'];
+        bestMatch = null;
+        bestScore = 0;
+        for (const [key, value] of Object.entries(enKb)) {
+            if (key === '_default') continue;
+            const keywords = key.split(' ');
+            let score = 0;
+            keywords.forEach(kw => {
+                if (q.includes(kw)) score++;
+            });
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = value;
+            }
+        }
+        if (bestScore > 0) return bestMatch;
+    }
+
+    return kb['_default'] || npsKnowledge['en']['_default'];
 }
 
 function addChatMessage(text, type) {
-  const msg = document.createElement('div');
-  msg.className = `chat-msg ${type}`;
-  msg.textContent = text;
-  chatBody.appendChild(msg);
-  chatBody.scrollTop = chatBody.scrollHeight;
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${type}`;
+    msg.textContent = text;
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 function showTypingIndicator() {
-  const typing = document.createElement('div');
-  typing.className = 'typing-indicator';
-  typing.id = 'typingIndicator';
-  typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-  chatBody.appendChild(typing);
-  chatBody.scrollTop = chatBody.scrollHeight;
+    const typing = document.createElement('div');
+    typing.className = 'typing-indicator';
+    typing.id = 'typingIndicator';
+    typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    chatBody.appendChild(typing);
+    chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 function removeTypingIndicator() {
-  const typing = $('#typingIndicator');
-  if (typing) typing.remove();
+    const typing = $('#typingIndicator');
+    if (typing) typing.remove();
 }
 
 function askBot(question) {
-  addChatMessage(question, 'user');
-  showTypingIndicator();
+    addChatMessage(question, 'user');
+    showTypingIndicator();
 
-  // Try AI backend first, fall back to local knowledge if needed
-  api.chatWithAI(question).then(res => {
-    removeTypingIndicator();
-    if (res && res.response) {
-      addChatMessage(res.response, 'bot');
-    } else {
-      // Fallback
-      const response = getBotResponse(question);
-      addChatMessage(response, 'bot');
-    }
-  }).catch(err => {
-    removeTypingIndicator();
-    const response = getBotResponse(question);
-    addChatMessage(response, 'bot');
-  });
+    // Try AI backend first (pass language), fall back to local knowledge
+    api.chatWithAI(question, state.language).then(res => {
+        removeTypingIndicator();
+        if (res && res.response) {
+            addChatMessage(res.response, 'bot');
+        } else {
+            addChatMessage(getBotResponse(question), 'bot');
+        }
+    }).catch(() => {
+        removeTypingIndicator();
+        addChatMessage(getBotResponse(question), 'bot');
+    });
 }
 
 // Chat send
 btnChatSend.addEventListener('click', () => {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  chatInput.value = '';
-  askBot(text);
+    const text = chatInput.value.trim();
+    if (!text) return;
+    chatInput.value = '';
+    askBot(text);
 });
 
 chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    btnChatSend.click();
-  }
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        btnChatSend.click();
+    }
 });
 
-// Voice Recognition (Web Speech API)
+// Voice Recognition (Web Speech API) — language-aware
 let isListening = false;
 let recognition = null;
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
-  recognition.continuous = false;
-  recognition.interimResults = false;
-  recognition.lang = 'en-IN';
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = langToSpeechLocale[state.language] || 'en-IN';
 
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    chatInput.value = transcript;
-    btnVoiceMic.classList.remove('listening');
-    isListening = false;
-    // Auto-send after voice input
-    setTimeout(() => btnChatSend.click(), 300);
-  };
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+        btnVoiceMic.classList.remove('listening');
+        isListening = false;
+        setTimeout(() => btnChatSend.click(), 300);
+    };
 
-  recognition.onerror = (event) => {
-    console.error('Speech recognition error:', event.error);
-    btnVoiceMic.classList.remove('listening');
-    isListening = false;
-    showToast('Voice recognition failed — please try again or type your question');
-  };
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        btnVoiceMic.classList.remove('listening');
+        isListening = false;
+        showToast('Voice recognition failed — please try again or type your question');
+    };
 
-  recognition.onend = () => {
-    btnVoiceMic.classList.remove('listening');
-    isListening = false;
-  };
+    recognition.onend = () => {
+        btnVoiceMic.classList.remove('listening');
+        isListening = false;
+    };
 }
 
 btnVoiceMic.addEventListener('click', () => {
