@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0B3D91">
+  <link rel="manifest" href="manifest.json">
+  <meta name="description"
+    content="National Pension System — Simplified Digital Onboarding. Open your NPS account quickly and securely.">
+  <title>NPS Digital Onboarding — National Pension System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230B3D91'/><text x='16' y='22' font-size='16' font-weight='bold' text-anchor='middle' fill='white'>N</text></svg>">
+</head>
+
+<body>
+  <!-- ===== OFFLINE MODE INDICATOR ===== -->
+  <div class="offline-bar" id="offlineBar">⚠️ You are offline — Data will be saved locally and synced when connectivity
+    returns</div>
+
+  <!-- ===== TRUST CUES REGULATORY BAR ===== -->
+  <div class="trust-cues-bar" id="trustBar">
+    <div class="trust-badge">
+      <div class="trust-logo rbi">RBI</div> RBI Regulated
+    </div>
+    <div class="trust-separator"></div>
+    <div class="trust-badge">
+      <div class="trust-logo pfrda">PF</div> PFRDA Approved
+    </div>
+    <div class="trust-separator"></div>
+    <div class="trust-badge">
+      <div class="trust-logo npci">UPI</div> UPI Enabled
+    </div>
+    <div class="trust-separator"></div>
+    <div class="trust-badge">
+      <div class="trust-logo ssl">🔒</div> 256-bit SSL
+    </div>
+  </div>
+  <!-- ===== LANGUAGE SELECTOR OVERLAY ===== -->
+  <div class="lang-overlay visible" id="langOverlay">
+    <div class="lang-header">
+      <div class="logo-icon">NPS</div>
+      <h2>Select Your Language</h2>
+      <p>Please choose your preferred language to continue</p>
+    </div>
+    <div class="lang-grid">
+      <button class="lang-btn" data-lang="en">
+        <span class="lang-native">English</span>
+        <span class="lang-en">English</span>
+      </button>
+      <button class="lang-btn" data-lang="hi">
+        <span class="lang-native">हिन्दी</span>
+        <span class="lang-en">Hindi</span>
+      </button>
+      <button class="lang-btn" data-lang="gu">
+        <span class="lang-native">ગુજરાતી</span>
+        <span class="lang-en">Gujarati</span>
+      </button>
+      <button class="lang-btn" data-lang="ta">
+        <span class="lang-native">தமிழ்</span>
+        <span class="lang-en">Tamil</span>
+      </button>
+      <button class="lang-btn" data-lang="te">
+        <span class="lang-native">తెలుగు</span>
+        <span class="lang-en">Telugu</span>
+      </button>
+      <button class="lang-btn" data-lang="kn">
+        <span class="lang-native">ಕನ್ನಡ</span>
+        <span class="lang-en">Kannada</span>
+      </button>
+      <button class="lang-btn" data-lang="or">
+        <span class="lang-native">ଓଡ଼ିଆ</span>
+        <span class="lang-en">Odiya</span>
+      </button>
+    </div>
+    <!-- Session Recovery -->
+    <div class="resume-section" id="resumeSection"
+      style="margin-top: 2rem; border-top: 1px solid var(--color-border); padding-top: 2rem;">
+      <p style="text-align: center; margin-bottom: 1rem; color: var(--color-text-muted); font-size: 0.9rem;">
+        Already have a saved application?
+      </p>
+      <div style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto; padding: 0 1rem;">
+        <input type="text" id="resumeTokenInput" placeholder="Enter Resume Token" class="form-input"
+          style="flex: 1; text-transform: uppercase;">
+        <button class="btn btn-secondary" id="btnResumeSession"
+          style="width: auto; white-space: nowrap;">Resume</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container" id="app">
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="top-bar" id="topBar">
+      <div class="top-bar-inner">
+        <div class="logo">
+          <div class="logo-icon">NPS</div>
+          <span data-i18n="pension">Pension</span>
+        </div>
+        <div class="step-indicator" id="stepIndicator">
+          <strong data-i18n="gettingStarted">Getting Started</strong>
+          <span data-i18n="selectAccount">Select Account Type</span>
+        </div>
+        <div class="top-bar-right">
+          <div class="session-timer" id="sessionTimer" title="Session timeout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="12" height="12">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span id="sessionTimerText">10:00</span>
+          </div>
+          <div class="secure-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
+            </svg>
+            <span data-i18n="secure">Secure</span>
+          </div>
+        </div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+      </div>
+    </header>
+
+    <!-- ===== ACCESSIBILITY BAR ===== -->
+    <div class="a11y-bar" id="a11yBar">
+      <div class="a11y-bar-inner">
+        <span class="a11y-label" data-i18n="accessibility">Accessibility:</span>
+        <button class="a11y-btn" id="btnTextSize" title="Increase Text Size">A<sup>+</sup></button>
+        <button class="a11y-btn" id="btnContrast" title="High Contrast Mode">◐</button>
+        <button class="a11y-btn" id="btnA11yClose" title="Close">✕</button>
+      </div>
+    </div>
+    <button class="a11y-toggle" id="a11yToggle" title="Accessibility Options"
+      aria-label="Accessibility Options">♿</button>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+      <!-- ========== PHASE 0 — Account Type Gate ========== -->
+      <section class="phase-screen active" id="phase0">
+        <!-- Digital Literacy Tip -->
+        <div class="literacy-tip" id="literacyTip0">
+          <div class="literacy-tip-icon">💡</div>
+          <div class="literacy-tip-content">
+            <strong>New to NPS?</strong>
+            <p>NPS (National Pension System) is a government-backed pension scheme that helps you save for retirement.
+              Your money is managed by professional fund managers. You can start with just ₹500!</p>
+          </div>
+          <button class="literacy-tip-close" onclick="this.parentElement.style.display='none'">✕</button>
+        </div>
+
+        <div class="phase-header">
+          <div class="phase-tag" data-i18n="ph0Tag">🏛️ Welcome</div>
+          <h1 data-i18n="welcome">Open Your NPS Account</h1>
+          <p data-i18n="welcomeSub">Select the type of account to get started</p>
+        </div>
+        <div class="selection-cards" id="accountTypeCards">
+          <div class="selection-card" data-account="citizen" tabindex="0" role="button" aria-label="All Citizen Model">
+            <div class="card-radio"></div>
+            <div class="card-icon green">👤</div>
+            <div class="card-content">
+              <h3><span data-i18n="citizen">All Citizen Model</span> <span class="card-badge"
+                  data-i18n="mostCommon">Most Common</span></h3>
+              <p data-i18n="citizenSub">For individual citizens — salaried, self-employed, or any Indian citizen aged
+                18–70</p>
+            </div>
+          </div>
+          <div class="selection-card" data-account="corporate" tabindex="0" role="button" aria-label="Corporate Model">
+            <div class="card-radio"></div>
+            <div class="card-icon blue">🏢</div>
+            <div class="card-content">
+              <h3 data-i18n="corporate">Corporate Model</h3>
+              <p data-i18n="corporateSub">For employees enrolled through their employer under the NPS Corporate Sector
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="conditional-field" id="corporateFields">
+          <div class="form-section">
+            <div class="form-section-title">
+              <div class="section-icon">🏢</div> <span data-i18n="corporateDetails">Corporate Details</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="employeeId">Employee ID</span> <span class="tag-required"
+                  data-i18n="required">(Required)</span></label>
+              <input type="text" class="form-input" placeholder="Enter your Employee ID" id="fieldEmployeeId"
+                data-i18n-placeholder="employeeId">
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="corpReg">Corporate Registration (CHO/CBO)</span> <span
+                  class="tag-required" data-i18n="required">(Required)</span></label>
+              <input type="text" class="form-input" placeholder="Enter CHO/CBO registration number" id="fieldCorpReg"
+                data-i18n-placeholder="corpReg">
+            </div>
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="retirementDate">Expected Date of Retirement</span> <span
+                  class="tag-required" data-i18n="required">(Required)</span></label>
+              <input type="date" class="form-input" id="fieldRetirementDate">
+            </div>
+          </div>
+        </div>
+
+        <!-- Alternate Channels for Tier-2/3 -->
+        <div class="alt-channels" id="altChannels">
+          <h4>📡 Other Ways to Open NPS Account</h4>
+          <div class="alt-channel-grid">
+            <div class="alt-channel-item"
+              onclick="window.open('https://wa.me/917977123456?text=Hi, I want to open an NPS account', '_blank')">
+              <div class="alt-icon wa">💬</div>
+              <span>WhatsApp<br><small style='color:var(--color-text-muted)'>Chat with Assistant</small></span>
+            </div>
+            <div class="alt-channel-item" onclick="handleAltChannel('ivr')">
+              <div class="alt-icon ivr">📞</div>
+              <span>IVR / 123Pay<br><small style='color:var(--color-text-muted)'>1800-222-080</small></span>
+            </div>
+            <div class="alt-channel-item" onclick="handleAltChannel('sms')">
+              <div class="alt-icon sms">📱</div>
+              <span>SMS Service<br><small style='color:var(--color-text-muted)'>56677</small></span>
+            </div>
+            <div class="alt-channel-item" onclick="handleAltChannel('pop')">
+              <div class="alt-icon pop">🏛️</div>
+              <span>Visit PoP Branch<br><small style='color:var(--color-text-muted)'>In-Person</small></span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========== PHASE 1 — Identity & Auto-Fill ========== -->
+      <section class="phase-screen" id="phase1">
+        <!-- Assisted VCIP Banner -->
+        <div class="vcip-banner" id="vcipBanner">
+          <div class="vcip-banner-icon">👨‍💼</div>
+          <div class="vcip-banner-content">
+            <strong data-i18n="assistedMode">Assisted Mode Active</strong>
+            <span data-i18n="popAssisting">PoP Agent is assisting this session</span>
+          </div>
+          <span class="vcip-role-badge" data-i18n="popOfficial">PoP Official</span>
+        </div>
+
+        <!-- Digital Literacy Tip for KYC -->
+        <div class="literacy-tip" id="literacyTip1">
+          <div class="literacy-tip-icon">🆔</div>
+          <div class="literacy-tip-content">
+            <strong>KYC Made Simple</strong>
+            <p>KYC (Know Your Customer) is a one-time identity verification required by RBI. You can use your existing
+              Aadhaar, PAN, or bank details — no need to visit any office!</p>
+          </div>
+          <button class="literacy-tip-close" onclick="this.parentElement.style.display='none'">✕</button>
+        </div>
+
+        <div class="phase-header">
+          <div class="phase-tag" data-i18n="ph1">🔵 Phase 1 — Identity</div>
+          <h1 data-i18n="identityTitle">Let's Fetch Your Verified Identity Details</h1>
+          <p data-i18n="identitySub">To reduce manual entry and speed up onboarding</p>
+        </div>
+
+        <!-- DigiLocker Integration -->
+        <div class="digilocker-card" id="digiLockerCard" tabindex="0" role="button">
+          <div class="digilocker-icon">📂</div>
+          <div class="digilocker-content">
+            <h4>📋 Fetch from DigiLocker</h4>
+            <p>Pull verified documents directly from your DigiLocker account (Govt. of India)</p>
+          </div>
+          <div class="digilocker-arrow">→</div>
+        </div>
+
+        <!-- KYC Method Selection Cards -->
+        <div class="selection-cards" id="kycCards">
+          <div class="selection-card" data-method="smartscan" tabindex="0" role="button"
+            aria-label="Smart Scan with Gemini AI">
+            <div class="card-radio"></div>
+            <div class="card-icon blue">✨</div>
+            <div class="card-content">
+              <h3><span data-i18n="smartScan">Smart Scan</span> <span class="card-badge" data-i18n="new">New</span></h3>
+              <p data-i18n="smartScanSub">Upload a photo of your PAN or Aadhaar — Gemini AI will auto-fill everything
+              </p>
+            </div>
+          </div>
+          <div class="selection-card" data-method="ckyc" tabindex="0" role="button" aria-label="Use CKYC Search">
+            <div class="card-radio"></div>
+            <div class="card-icon blue">🏦</div>
+            <div class="card-content">
+              <h3><span data-i18n="useCkyc">Use CKYC Registry</span> <span class="card-badge green"
+                  data-i18n="recommended">Recommended</span></h3>
+              <p data-i18n="ckycSub">Fastest — fetches your identity from the Central KYC Registry (CKYCR)</p>
+            </div>
+          </div>
+          <div class="selection-card" data-method="bank" tabindex="0" role="button" aria-label="Use Bank Account">
+            <div class="card-radio"></div>
+            <div class="card-icon green">🏧</div>
+            <div class="card-content">
+              <h3 data-i18n="useBank">Use Bank Account</h3>
+              <p data-i18n="bankSub">Pull verified details from your linked bank account (CBS)</p>
+            </div>
+          </div>
+          <div class="selection-card" data-method="aadhaar" tabindex="0" role="button" aria-label="Use Aadhaar OTP">
+            <div class="card-radio"></div>
+            <div class="card-icon orange">📱</div>
+            <div class="card-content">
+              <h3 data-i18n="useAadhaar">Use Aadhaar OTP</h3>
+              <p data-i18n="aadhaarSub">Verify with an OTP sent to your Aadhaar-linked mobile</p>
+            </div>
+          </div>
+          <div class="selection-card" data-method="manual" tabindex="0" role="button"
+            aria-label="Upload Documents Manually">
+            <div class="card-radio"></div>
+            <div class="card-icon neutral">📄</div>
+            <div class="card-content">
+              <h3 data-i18n="manualTags">Upload Documents Manually</h3>
+              <p data-i18n="manualSub">Upload your ID proof, address proof, and PAN card</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smart Scan Upload UI -->
+        <div class="ckyc-discovery" id="smartScanUI"
+          style="display:none; text-align:center; padding:var(--space-6); border:2px dashed var(--color-primary-light); border-radius:var(--radius-lg); background:var(--color-primary-bg); margin-bottom:var(--space-6);">
+          <div style="font-size:3rem; margin-bottom:var(--space-4)">📸</div>
+          <h3 data-i18n="uploadDoc">Upload Identity Document</h3>
+          <p style="color:var(--color-text-muted); margin-bottom:var(--space-4)">Snap a clear photo of your PAN card or
+            Aadhaar card</p>
+          <input type="file" id="docUploadInput" accept="image/*" style="display:none">
+          <button class="btn btn-primary" id="btnBrowseDoc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="18" height="18" style="margin-right:8px">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Select Document
+          </button>
+          <div class="ocr-progress" id="ocrProgress" style="display:none; margin-top:var(--space-6)">
+            <div class="ai-badge"
+              style="display:inline-flex; align-items:center; background:linear-gradient(90deg, #0B3D91, #1A5BC4); color:white; padding:4px 12px; border-radius:20px; font-weight:bold; font-size:var(--font-size-xs); margin-bottom:var(--space-3)">
+              <span style="margin-right:6px">🧠</span> Secure AI Processing
+            </div>
+            <div
+              style="position:relative; height:4px; background:var(--color-border); border-radius:2px; overflow:hidden">
+              <div id="ocrProgressBar"
+                style="position:absolute; top:0; left:0; height:100%; width:0; background:linear-gradient(90deg, #0B3D91, #1A5BC4); transition:width 0.3s ease">
+              </div>
+            </div>
+            <p id="ocrStatusText"
+              style="font-size:var(--font-size-sm); margin-top:var(--space-3); color:var(--color-primary)">Analyzing
+              document structure...</p>
+          </div>
+        </div>
+
+        <!-- CKYC Discovery -->
+        <div class="ckyc-discovery" id="ckycDiscovery">
+          <button class="ckyc-discovery-link" id="btnCkycLookup" data-i18n="ckycLookup">🔍 Don't know your CKYC number?
+            Look up via
+            PAN</button>
+          <div class="ckyc-lookup-panel" id="ckycLookupPanel">
+            <div class="form-group" style="margin-bottom:var(--space-3)">
+              <label class="form-label" data-i18n="enterPanLookup">Enter PAN for CKYC Lookup</label>
+              <input type="text" class="form-input" placeholder="e.g. ABCPS1234K" id="fieldCkycPan" maxlength="10"
+                style="text-transform:uppercase" data-i18n-placeholder="placeholderPan">
+            </div>
+            <button class="btn btn-primary" id="btnCkycSearch" style="height:42px;font-size:var(--font-size-sm)"
+              data-i18n="searchCkycr">Search
+              CKYCR Registry</button>
+            <div class="ckyc-result" id="ckycResult"></div>
+            <div class="form-hint" style="margin-top:var(--space-2);font-style:italic" data-i18n="ckycApiNote">Via
+              secure CKYCR API integration
+              with subscriber consent</div>
+          </div>
+        </div>
+
+        <!-- Consent Box (appears after selection) -->
+        <div class="consent-box" id="consentBox">
+          <div class="consent-icon">🔐</div>
+          <h3 data-i18n="permReq">Permission Required</h3>
+          <p data-i18n="permSub">We need your permission to retrieve your verified identity records for KYC compliance.
+            Your data is encrypted and used only for this onboarding.</p>
+          <div class="consent-actions">
+            <button class="btn btn-primary" id="btnAllowConsent" data-i18n="allowCont">Allow &amp; Continue</button>
+            <button class="btn btn-secondary" id="btnCancelConsent" data-i18n="cancel">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Verification Badges (appear after consent) -->
+        <div class="verification-badges" id="verBadges">
+          <div class="v-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span data-i18n="idRetrieved">Identity Retrieved</span>
+          </div>
+          <div class="v-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span data-i18n="panValidated">PAN Validated</span>
+          </div>
+          <div class="v-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span data-i18n="addrVerified">Address Verified</span>
+          </div>
+        </div>
+
+        <!-- KYC Mode & Risk Badge (compliance) -->
+        <div class="kyc-compliance-badge" id="kycComplianceBadge">
+          <div class="kyc-badge-row">
+            <span class="kyc-badge-label">KYC Mode:</span>
+            <span class="kyc-badge-value" id="kycModeText">Non Face-to-Face — CKYC Retrieval</span>
+          </div>
+          <div class="kyc-badge-row">
+            <span class="kyc-badge-label">Risk Category:</span>
+            <span class="kyc-badge-value kyc-risk-standard" id="kycRiskText">Standard</span>
+          </div>
+          <div class="kyc-badge-row" id="riskReasonRow" style="display:none">
+            <span class="kyc-badge-label">Reason:</span>
+            <span class="kyc-badge-value" id="kycRiskReason"></span>
+          </div>
+          <div class="vcip-recommendation" id="vcipRecommendation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" width="14" height="14">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87" />
+              <path d="M16 3.13a4 4 0 010 7.75" />
+            </svg>
+            <span>VCIP Recommended — Initiate assisted video verification</span>
+          </div>
+        </div>
+
+        <!-- Emotional Assurance -->
+        <div class="assurance-line" id="assuranceLine">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" width="16" height="16">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Your identity is securely verified using Government-Approved Records.
+        </div>
+
+        <!-- Auto-filled Fields (appear after consent) -->
+        <div class="autofill-fields" id="autofillFields">
+          <div class="form-section">
+            <div class="form-section-title">
+              <div class="section-icon">👤</div> <span data-i18n="verifiedDetails">Verified Details</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="fullName">Full Name</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="Awaiting AI Scan..." disabled
+                  id="fieldName">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Father's Name / Spouse's Name</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="Awaiting AI Scan..." disabled
+                  id="fieldFatherName">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="dob">Date of Birth</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="Awaiting AI Scan..." disabled
+                  id="fieldDob">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="Awaiting AI Scan..." disabled
+                  id="fieldGender">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="pan">PAN</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="Awaiting AI Scan..." disabled
+                  id="fieldPan">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="address">Address</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="Awaiting AI Scan..." disabled
+                  id="fieldAddress">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="mobileNumber">Mobile Number</label>
+              <div class="form-input-wrapper">
+                <input type="text" class="form-input locked" value="" placeholder="+91 XXX..." disabled
+                  id="fieldMobile">
+                <span class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg> <span data-i18n="verified">Verified</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== PHASE 2 — Confirm & Complete Profile ========== -->
+      <section class="phase-screen" id="phase2">
+        <div class="phase-header">
+          <div class="phase-tag" data-i18n="ph2">🟢 Phase 2 — Profile</div>
+          <h1 data-i18n="ph2Title">Complete Your Profile</h1>
+          <p data-i18n="ph2Sub">Just a few more details to finish your profile</p>
+        </div>
+
+        <!-- Required Fields Counter -->
+        <div class="fields-counter" id="fieldsCounter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" width="16" height="16">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg>
+          <span id="fieldsCounterText"><span id="fieldsRemainingCount">6</span> <span
+              data-i18n="fieldsRemaining">required fields remaining</span></span>
+        </div>
+
+        <!-- Section A: About You -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <div class="section-icon">📋</div> <span data-i18n="aboutYou">About You</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-i18n="occupation">Occupation</span> <span class="tag-required"
+                data-i18n="required">(Required)</span></label>
+            <select class="form-select" id="fieldOccupation" data-i18n-select="occupation">
+              <option value="" data-i18n="selectOccupation">Select your occupation</option>
+              <option data-i18n="occSalPriv">Salaried — Private Sector</option>
+              <option data-i18n="occSalGov">Salaried — Government</option>
+              <option data-i18n="occSelf">Self-Employed / Business</option>
+              <option data-i18n="occProf">Professional (Doctor, Lawyer, CA, etc.)</option>
+              <option data-i18n="occStudent">Student</option>
+              <option data-i18n="occHome">Homemaker</option>
+              <option data-i18n="occRetired">Retired</option>
+              <option data-i18n="occOther">Other</option>
+            </select>
+            <div class="form-error" id="errOccupation" style="display:none">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              Please select your occupation
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-i18n="annualIncome">Annual Income Range</span> <span
+                class="tag-required" data-i18n="required">(Required)</span></label>
+            <select class="form-select" id="fieldIncome" data-i18n-select="income">
+              <option value="" data-i18n="selectIncome">Select income range</option>
+              <option data-i18n="incBelow2k">Below ₹2.5 Lakh</option>
+              <option data-i18n="inc2k5k">₹2.5 – 5 Lakh</option>
+              <option data-i18n="inc5k10k">₹5 – 10 Lakh</option>
+              <option data-i18n="inc10k25k">₹10 – 25 Lakh</option>
+              <option data-i18n="inc25k50k">₹25 – 50 Lakh</option>
+              <option data-i18n="incAbove50k">Above ₹50 Lakh</option>
+            </select>
+            <div class="form-error" id="errIncome" style="display:none">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              Please select your income range
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-i18n="maritalStatus">Marital Status</span> <span class="tag-required"
+                data-i18n="required">(Required)</span></label>
+            <select class="form-select" id="fieldMarital" data-i18n-select="marital">
+              <option value="" data-i18n="selectMarital">Select marital status</option>
+              <option data-i18n="msSingle">Single</option>
+              <option data-i18n="msMarried">Married</option>
+              <option data-i18n="msDivorced">Divorced</option>
+              <option data-i18n="msWidowed">Widowed</option>
+            </select>
+            <div class="form-error" id="errMarital" style="display:none">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              Please select your marital status
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              Type of Disability <span class="tag-optional">(Optional)</span>
+              <button class="info-trigger" aria-label="Info about disability field">
+                ?
+                <span class="tooltip">If you have a disability recognized under the Rights of Persons with Disabilities
+                  Act, 2016, select the type. This helps provide any applicable benefits.</span>
+              </button>
+            </label>
+            <select class="form-select" id="fieldDisability">
+              <option value="">None / Not Applicable</option>
+              <option>Visual Impairment</option>
+              <option>Hearing Impairment</option>
+              <option>Locomotor Disability</option>
+              <option>Intellectual Disability</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Section B: Nominee Details -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <div class="section-icon">👥</div> <span data-i18n="nomineeDetails">NOMINEE DETAILS</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-i18n="nomineeName">Nominee Full Name</span> <span class="tag-required"
+                data-i18n="required">(Required)</span></label>
+            <input type="text" class="form-input" placeholder="Enter nominee's full name" id="fieldNomineeName"
+              data-i18n-placeholder="placeholderNomineeName">
+            <div class="form-error" id="errNomineeName" style="display:none">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              Please enter nominee's name
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-i18n="relationship">Relationship</span> <span class="tag-required"
+                data-i18n="required">(Required)</span></label>
+            <select class="form-select" id="fieldRelationship" data-i18n-select="relationship">
+              <option value="" data-i18n="selectRel">Select relationship</option>
+              <option data-i18n="relFather">Father</option>
+              <option data-i18n="relMother">Mother</option>
+              <option data-i18n="relSpouse">Spouse</option>
+              <option data-i18n="relSon">Son</option>
+              <option data-i18n="relDaughter">Daughter</option>
+              <option data-i18n="relOther">Other</option>
+            </select>
+            <div class="form-error" id="errRelationship" style="display:none">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              Please select a relationship
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-i18n="nomineeDob">Nominee Date of Birth</span> <span
+                class="tag-required" data-i18n="required">(Required)</span></label>
+            <input type="date" class="form-input" id="fieldNomineeDob">
+            <div class="form-error" id="errNomineeDob" style="display:none">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              Please enter nominee's date of birth
+            </div>
+            <div class="form-hint" id="minorHint" style="display:none">Nominee is a minor — guardian details required
+              below.</div>
+          </div>
+          <!-- Guardian (conditional) -->
+          <div class="conditional-field" id="guardianField">
+            <div class="form-group">
+              <label class="form-label"><span data-i18n="guardianName">Guardian Full Name</span> <span
+                  class="tag-required" data-i18n="required">(Required)</span></label>
+              <input type="text" class="form-input" placeholder="Enter guardian's full name" id="fieldGuardianName"
+                data-i18n-placeholder="placeholderGuardianName">
+              <div class="form-error" id="errGuardianName" style="display:none">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                  <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                  <circle cx="12" cy="16" r="1" />
+                </svg>
+                Guardian name is required for minor nominees
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== PHASE 3 — Pension Setup ========== -->
+      <section class="phase-screen" id="phase3">
+        <div class="phase-header">
+          <div class="phase-tag" data-i18n="ph3">🟡 Phase 3 — Pension Setup</div>
+          <h1 data-i18n="ph3Title">How Would You Like Your Pension Invested?</h1>
+          <p data-i18n="ph3Sub">Choose how your contributions are managed</p>
+        </div>
+
+        <!-- Investment Choice Cards -->
+        <div class="selection-cards" id="investmentCards">
+          <div class="selection-card" data-choice="auto" tabindex="0" role="button" aria-label="Auto Choice">
+            <div class="card-radio"></div>
+            <div class="card-icon green">🟢</div>
+            <div class="card-content">
+              <h3><span data-i18n="autoChoice">Auto Choice</span> <span class="card-badge"
+                  data-i18n="recommended">Recommended</span></h3>
+              <p data-i18n="riskAdjusts">Risk automatically adjusts as you age — higher equity when young, safer as you
+                approach retirement</p>
+            </div>
+          </div>
+          <div class="selection-card" data-choice="active" tabindex="0" role="button" aria-label="Active Choice">
+            <div class="card-radio"></div>
+            <div class="card-icon blue">🔵</div>
+            <div class="card-content">
+              <h3 data-i18n="activeChoice">Active Choice</h3>
+              <p data-i18n="youDecide">You decide how much goes into equity, corporate bonds, and government securities
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explainer (appears after selection) -->
+        <div class="consent-box" id="investExplainer" style="display:none">
+          <p id="investExplainerText" style="margin-bottom:0"></p>
+        </div>
+
+        <!-- Risk Awareness for Active Choice -->
+        <div class="risk-awareness" id="riskAwareness">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" width="16" height="16">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          Active Choice may involve higher market volatility. Please review your allocation periodically.
+        </div>
+
+        <!-- CRA & Fund Selection (progressive disclosure) -->
+        <div class="autofill-fields" id="investmentSetup">
+          <div class="form-section">
+            <div class="form-section-title">
+              <div class="section-icon">⚙️</div> <span data-i18n="investmentSetup">Investment Setup</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                <span data-i18n="cra">Central Recordkeeping Agency (CRA)</span> <span class="tag-required"
+                  data-i18n="required">(Required)</span>
+                <button class="info-trigger" aria-label="What is CRA?">
+                  ?
+                  <span class="tooltip">The Central Recordkeeping Agency manages your pension account records, tracks
+                    your contributions, and provides statements. Think of it as your pension account
+                    administrator.</span>
+                </button>
+              </label>
+              <select class="form-select" id="fieldCra">
+                <option value="" data-i18n="selectCra">Select CRA</option>
+                <option>NSDL e-Governance (NSDL)</option>
+                <option>KFin Technologies (KFintech)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                <span data-i18n="pfm">Pension Fund Manager</span> <span class="tag-required"
+                  data-i18n="required">(Required)</span>
+                <button class="info-trigger" aria-label="What is Pension Fund Manager?">
+                  ?
+                  <span class="tooltip">The Pension Fund Manager is responsible for investing your contributions
+                    according to the investment choice you selected. They manage the growth of your pension
+                    corpus.</span>
+                </button>
+              </label>
+              <select class="form-select" id="fieldPfm">
+                <option value="" data-i18n="selectPfm">Select pension fund</option>
+                <option>SBI Pension Funds Pvt. Ltd.</option>
+                <option>LIC Pension Fund Ltd.</option>
+                <option>UTI Retirement Solutions Ltd.</option>
+                <option>HDFC Pension Management Co. Ltd.</option>
+                <option>ICICI Prudential Pension Funds Mgmt. Co.</option>
+                <option>Kotak Mahindra Pension Fund Ltd.</option>
+                <option>Aditya Birla Sun Life Pension Mgmt. Ltd.</option>
+                <option>Tata Pension Management Ltd.</option>
+              </select>
+            </div>
+
+            <!-- MSF: Secondary PF (Multi-Scheme Framework) -->
+            <div class="form-group">
+              <label class="form-label">
+                <span data-i18n="secondaryPf">Secondary Pension Fund</span> <span class="tag-optional">(Optional —
+                  MSF)</span>
+                <button class="info-trigger" aria-label="What is Multi-Scheme Framework?">
+                  ?
+                  <span class="tooltip">Under the Multi-Scheme Framework (MSF), you can choose different fund managers
+                    for different asset classes (E, C, G). This is optional — if not selected, your primary PF manages
+                    all classes.</span>
+                </button>
+              </label>
+              <select class="form-select" id="fieldPfm2">
+                <option value="" data-i18n="noneSinglePf">None — Single PF manages all asset classes</option>
+                <option>SBI Pension Funds Pvt. Ltd.</option>
+                <option>LIC Pension Fund Ltd.</option>
+                <option>UTI Retirement Solutions Ltd.</option>
+                <option>HDFC Pension Management Co. Ltd.</option>
+                <option>ICICI Prudential Pension Funds Mgmt. Co.</option>
+                <option>Kotak Mahindra Pension Fund Ltd.</option>
+                <option>Aditya Birla Sun Life Pension Mgmt. Ltd.</option>
+                <option>Tata Pension Management Ltd.</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Active Choice: Asset Allocation Sliders -->
+          <div class="allocation-panel" id="allocationPanel">
+            <div class="form-section-title">
+              <div class="section-icon">📊</div> <span data-i18n="assetAllocation">Asset Class Allocation</span>
+            </div>
+            <div class="allocation-cap-info" id="allocationCapInfo">
+              <span data-i18n="maxEquity">Max Equity</span>: <strong id="maxEquityDisplay">75%</strong> (age-based PFRDA
+              cap)
+            </div>
+            <div class="allocation-slider-group">
+              <div class="allocation-row">
+                <label class="allocation-label">Equity (E)</label>
+                <input type="range" class="allocation-slider equity-slider" id="sliderEquity" min="0" max="75"
+                  value="50">
+                <span class="allocation-value" id="valEquity">50%</span>
+              </div>
+              <div class="allocation-row">
+                <label class="allocation-label">Corporate Bonds (C)</label>
+                <input type="range" class="allocation-slider corp-slider" id="sliderCorp" min="0" max="100" value="30">
+                <span class="allocation-value" id="valCorp">30%</span>
+              </div>
+              <div class="allocation-row">
+                <label class="allocation-label">Govt Securities (G)</label>
+                <input type="range" class="allocation-slider govt-slider" id="sliderGovt" min="0" max="100" value="20">
+                <span class="allocation-value" id="valGovt">20%</span>
+              </div>
+            </div>
+            <div class="allocation-total" id="allocationTotal">
+              Total: <strong id="allocationSum">100%</strong>
+            </div>
+            <div class="allocation-error" id="allocationError" style="display:none">Allocation must total exactly 100%
+            </div>
+          </div>
+
+          <!-- Auto Choice: Lifecycle Preview -->
+          <div class="lifecycle-preview" id="lifecyclePreview">
+            <div class="form-section-title">
+              <div class="section-icon">📈</div> <span data-i18n="lifecyclePath">Lifecycle Glide Path</span>
+            </div>
+            <div class="lifecycle-info">
+              Your allocation automatically adjusts based on your age:
+            </div>
+            <div class="lifecycle-chart">
+              <div class="lifecycle-bar">
+                <div class="lc-segment equity" style="width:75%">E: 75%</div>
+                <div class="lc-segment corp" style="width:15%">C</div>
+                <div class="lc-segment govt" style="width:10%">G</div>
+              </div>
+              <span class="lifecycle-age">Age 25</span>
+            </div>
+            <div class="lifecycle-chart">
+              <div class="lifecycle-bar">
+                <div class="lc-segment equity" style="width:50%">E: 50%</div>
+                <div class="lc-segment corp" style="width:30%">C: 30%</div>
+                <div class="lc-segment govt" style="width:20%">G: 20%</div>
+              </div>
+              <span class="lifecycle-age">Age 40</span>
+            </div>
+            <div class="lifecycle-chart">
+              <div class="lifecycle-bar">
+                <div class="lc-segment equity" style="width:20%">E</div>
+                <div class="lc-segment corp" style="width:35%">C: 35%</div>
+                <div class="lc-segment govt" style="width:45%">G: 45%</div>
+              </div>
+              <span class="lifecycle-age">Age 55</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========== PHASE 4 — Tax Declaration & Payment ========== -->
+      <section class="phase-screen" id="phase4">
+        <div class="phase-header">
+          <div class="phase-tag" data-i18n="ph4">🟣 Phase 4 — Confirmation</div>
+          <h1 data-i18n="ph4Title">Final Details Before Activation</h1>
+          <p data-i18n="ph4Sub">Almost done — just a few regulatory details and your first contribution</p>
+        </div>
+
+        <!-- Tax Residency -->
+        <div class="form-section">
+          <div class="form-section-title">
+            <div class="section-icon">🌐</div> <span data-i18n="taxInfo">Tax Residency Information</span>
+          </div>
+          <p style="font-size:var(--font-size-sm);color:var(--color-text-muted);margin-bottom:var(--space-4)">Required
+            by international tax regulations</p>
+          <div class="form-group">
+            <label class="form-label">
+              <span data-i18n="isTaxResident">Are you a tax resident outside India?</span>
+              <button class="info-trigger" aria-label="Info about tax residency">
+                ?
+                <span class="tooltip">Tax residency refers to the country where you are legally obligated to pay taxes.
+                  If you pay taxes in any country other than India, select "Yes".</span>
+              </button>
+            </label>
+            <div class="toggle-group" id="toggleTaxResident">
+              <button class="toggle-btn" data-value="no" data-i18n="no">No</button>
+              <button class="toggle-btn" data-value="yes" data-i18n="yes">Yes</button>
+            </div>
+          </div>
+          <div class="conditional-field" id="taxResidentFields">
+            <div class="form-group">
+              <label class="form-label">Country of Tax Residency <span class="tag-required">(Required)</span></label>
+              <select class="form-select" id="fieldTaxCountry">
+                <option value="">Select country</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Australia</option>
+                <option>United Arab Emirates</option>
+                <option>Singapore</option>
+                <option>Germany</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <span data-i18n="isPep">Are you a Politically Exposed Person (PEP)?</span>
+              <button class="info-trigger" aria-label="What is PEP?">
+                ?
+                <span class="tooltip">A Politically Exposed Person is someone holding or related to someone holding a
+                  senior public office — such as a Minister, Member of Parliament, or senior government official.</span>
+              </button>
+            </label>
+            <div class="toggle-group" id="togglePep">
+              <button class="toggle-btn" data-value="no" data-i18n="no">No</button>
+              <button class="toggle-btn" data-value="yes" data-i18n="yes">Yes</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consent Summary -->
+        <div class="consent-summary">
+          <h3 data-i18n="authSummary">📋 Authorization Summary</h3>
+          <ul>
+            <li>Central Recordkeeping Agency to manage your pension account records</li>
+            <li>Pension Fund Manager to manage your investment contributions</li>
+            <li>PFRDA (Pension Fund Regulatory Authority) to regulate your pension</li>
+          </ul>
+        </div>
+
+        <!-- Checkbox -->
+        <div class="checkbox-group" id="consentCheckbox" tabindex="0" role="checkbox" aria-checked="false">
+          <div class="checkbox-custom"></div>
+          <div class="checkbox-label" data-i18n="confirmAccuracy">I confirm that all details provided are accurate. I
+            authorize the above entities and agree to the terms of the National Pension System.</div>
+        </div>
+
+        <!-- Collapsible Legal -->
+        <div class="collapsible" id="legalCollapsible">
+          <button class="collapsible-trigger" aria-expanded="false">
+            <span data-i18n="viewTerms">📄 View Full Terms & Conditions</span>
+            <span class="chevron">▼</span>
+          </button>
+          <div class="collapsible-content">
+            <div class="collapsible-inner">
+              <p>By proceeding, you agree to abide by the rules and regulations of the National Pension System as
+                prescribed by the Pension Fund Regulatory and Development Authority (PFRDA). Your personal data will be
+                processed in accordance with applicable data protection laws. The Central Recordkeeping Agency will
+                maintain records of your contributions, withdrawals, and investment allocations. The Pension Fund
+                Manager will invest your contributions in accordance with the investment guidelines issued by PFRDA. You
+                acknowledge that returns from pension investments are subject to market risks. For full terms, visit <a
+                  href="https://www.pfrda.org.in" target="_blank">pfrda.org.in</a>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- e-Sign Section -->
+        <div class="esign-section" id="esignSection">
+          <div class="esign-icon">✍️</div>
+          <h3>Digital Signature (e-Sign)</h3>
+          <p>Electronically sign your application — no printing or posting required</p>
+          <div class="esign-methods" id="esignMethods">
+            <div class="esign-method" data-esign="aadhaar" onclick="selectEsign(this)">
+              📱 Aadhaar OTP e-Sign
+            </div>
+            <div class="esign-method" data-esign="dsc" onclick="selectEsign(this)">
+              🔑 Digital Signature (DSC)
+            </div>
+          </div>
+          <div class="esign-status" id="esignStatus">✅ e-Sign completed via Aadhaar OTP — Document signed</div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section">
+          <h3 data-i18n="initialContribution">💳 Make Initial Contribution</h3>
+          <p>Activate your NPS account with a minimum initial contribution</p>
+          <div class="form-group">
+            <label class="form-label">Contribution Amount <span class="tag-required"
+                data-i18n="required">(Required)</span></label>
+            <div class="form-input-wrapper">
+              <input type="text" class="form-input" placeholder="₹ 500 (Minimum)" value="₹ 1,000" id="fieldContribution"
+                data-i18n-placeholder="placeholderContribution">
+            </div>
+            <div class="form-hint">Minimum contribution: ₹500 for Tier I account</div>
+          </div>
+
+          <!-- UPI Payment Methods -->
+          <h4
+            style="margin:var(--space-4) 0 var(--space-3);font-size:var(--font-size-sm);color:var(--color-text-secondary)">
+            Select Payment Method</h4>
+          <div class="payment-methods" id="paymentMethods">
+            <div class="payment-method-card" data-pay="upi" onclick="selectPaymentMethod(this)">
+              <div class="pm-icon upi">₹</div>
+              <div class="pm-content">
+                <h4>UPI Payment</h4>
+                <p>Pay instantly via any UPI app (GPay, PhonePe, Paytm)</p>
+              </div>
+              <span class="pm-badge">Popular</span>
+            </div>
+            <div class="payment-method-card" data-pay="upi-lite" onclick="selectPaymentMethod(this)">
+              <div class="pm-icon upi-lite">⚡</div>
+              <div class="pm-content">
+                <h4>UPI Lite</h4>
+                <p>For amounts under ₹1,000 — No PIN required, works offline</p>
+              </div>
+              <span class="pm-badge">New</span>
+            </div>
+            <div class="payment-method-card" data-pay="netbanking" onclick="selectPaymentMethod(this)">
+              <div class="pm-icon netbank">🏦</div>
+              <div class="pm-content">
+                <h4>Net Banking</h4>
+                <p>Direct transfer from your bank account</p>
+              </div>
+            </div>
+            <div class="payment-method-card" data-pay="card" onclick="selectPaymentMethod(this)">
+              <div class="pm-icon card">💳</div>
+              <div class="pm-content">
+                <h4>Debit / Credit Card</h4>
+                <p>Visa, Mastercard, or RuPay</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- UPI QR Code Display -->
+          <div class="upi-qr-display" id="upiQrDisplay">
+            <div class="upi-qr-box">⬛</div>
+            <p style="font-size:var(--font-size-sm);color:var(--color-text-secondary);margin-bottom:var(--space-2)">Scan
+              with any UPI app to pay</p>
+            <div class="upi-id-display">nps@rbi.org.in</div>
+            <p style="font-size:var(--font-size-xs);color:var(--color-text-muted);margin-top:var(--space-2)">QR code is
+              valid for 10 minutes • Secured by NPCI</p>
+          </div>
+
+          <div class="payment-amount">
+            <span data-i18n="totalPayable">Total Payable</span>
+            <span id="totalPayable">₹ 1,000</span>
+          </div>
+        </div>
+
+        <!-- Literacy tip for payment -->
+        <div class="literacy-tip" id="literacyTip4">
+          <div class="literacy-tip-icon">💰</div>
+          <div class="literacy-tip-content">
+            <strong>Tax Benefits with NPS</strong>
+            <p>You can claim up to ₹2 lakh tax deduction under Section 80C (₹1.5L) + 80CCD(1B) (₹50K) on your NPS
+              contributions. Your money grows tax-free until withdrawal!</p>
+          </div>
+          <button class="literacy-tip-close" onclick="this.parentElement.style.display='none'">✕</button>
+        </div>
+      </section>
+
+      <!-- ========== SUCCESS SCREEN ========== -->
+      <section class="phase-screen" id="successScreen">
+        <div class="success-screen">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <h1 data-i18n="successTitle">🎉 PRAN Generated Successfully!</h1>
+          <p class="success-subtitle" data-i18n="successSub">Your National Pension System account is now active</p>
+          <div class="pran-display">
+            <div class="pran-label" data-i18n="pranLabel">Your Permanent Retirement Account Number</div>
+            <div class="pran-number" id="pranNumber">1101 2345 6789</div>
+          </div>
+          <div class="success-actions">
+            <button class="btn btn-success btn-lg" onclick="alert('ePRAN PDF would be downloaded')"
+              data-i18n="downloadEpran">📥 Download
+              ePRAN</button>
+            <button class="btn btn-outline btn-lg" onclick="alert('Navigating to Dashboard')"
+              data-i18n="goToDashboard">🏠 Go to
+              Dashboard</button>
+          </div>
+          <!-- Next Recommended Steps -->
+          <div class="next-steps">
+            <h3 data-i18n="nextSteps">Recommended Next Steps</h3>
+            <div class="next-steps-list">
+              <div class="next-step-item">
+                <div class="next-step-icon">➕</div>
+                <div>
+                  <strong data-i18n="openTier2">Open Tier II Account</strong>
+                  <p>Flexible withdrawals for short-term goals</p>
+                </div>
+              </div>
+              <div class="next-step-item">
+                <div class="next-step-icon">🔄</div>
+                <div>
+                  <strong data-i18n="setupAutoDebit">Set Up Auto-Debit</strong>
+                  <p>Automate monthly contributions via standing instruction</p>
+                </div>
+              </div>
+              <div class="next-step-item">
+                <div class="next-step-icon">📱</div>
+                <div>
+                  <strong data-i18n="downloadApp">Download NPS Mobile App</strong>
+                  <p>Track contributions and manage your pension on the go</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== ADMIN DASHBOARD ========== -->
+      <section class="phase-screen" id="adminDashboard">
+        <div class="admin-header">
+          <div class="phase-tag">⚙️ Internal View</div>
+          <h1>Regulator Dashboard</h1>
+          <p>Onboarding activity overview — 19 Feb 2026</p>
+        </div>
+
+        <div class="admin-stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Onboardings</div>
+            <div class="stat-value">1,247</div>
+            <div class="stat-change">↑ 12% vs yesterday</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completion Rate</div>
+            <div class="stat-value">87%</div>
+            <div class="stat-change">↑ 3% this week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending Verification</div>
+            <div class="stat-value">63</div>
+            <div class="stat-change">↓ 8% reduction</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg. Completion Time</div>
+            <div class="stat-value">4.2m</div>
+            <div class="stat-change">↓ 1.1 min faster</div>
+          </div>
+        </div>
+
+        <div class="dist-chart">
+          <h3>Mode Distribution</h3>
+          <div class="dist-bar-container">
+            <div class="dist-bar-label"><span>CKYC</span><span>62%</span></div>
+            <div class="dist-bar">
+              <div class="dist-bar-fill blue" style="width:62%"></div>
+            </div>
+          </div>
+          <div class="dist-bar-container">
+            <div class="dist-bar-label"><span>Aadhaar OTP</span><span>24%</span></div>
+            <div class="dist-bar">
+              <div class="dist-bar-fill green" style="width:24%"></div>
+            </div>
+          </div>
+          <div class="dist-bar-container">
+            <div class="dist-bar-label"><span>CBS (Bank)</span><span>10%</span></div>
+            <div class="dist-bar">
+              <div class="dist-bar-fill orange" style="width:10%"></div>
+            </div>
+          </div>
+          <div class="dist-bar-container">
+            <div class="dist-bar-label"><span>Manual Upload</span><span>4%</span></div>
+            <div class="dist-bar">
+              <div class="dist-bar-fill blue" style="width:4%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- F2F Compliance Log -->
+        <div class="dist-chart">
+          <h3>KYC Compliance Log</h3>
+          <div class="compliance-log">
+            <div class="compliance-log-row">
+              <span class="cl-label">Verification Mode</span>
+              <span class="cl-value">Non Face-to-Face</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">KYC Retrieval Source</span>
+              <span class="cl-value">CKYC / Aadhaar eKYC / CBS</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">Risk Classification</span>
+              <span class="cl-value cl-standard" id="adminRisk">Standard (Low Risk)</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">CKYC Upload Status</span>
+              <span class="cl-value cl-scheduled" id="adminCkycStatus">Scheduled (Within 10-day mandate)</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">PoP Official F2F Declaration</span>
+              <span class="cl-value cl-na">N/A — Digital Channel</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">Master Circular Ref.</span>
+              <span class="cl-value">Section 8.2.1 — KYC Norms</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Trail -->
+        <div class="dist-chart">
+          <h3>🔍 Audit Trail</h3>
+          <div class="compliance-log">
+            <div class="compliance-log-row">
+              <span class="cl-label">Log ID</span>
+              <span class="cl-value cl-mono" id="adminLogId">ONB-20260219-1043</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">Timestamp</span>
+              <span class="cl-value" id="adminTimestamp">19 Feb 2026 14:23 IST</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">IP Logged</span>
+              <span class="cl-value cl-standard">Yes</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">Consent Hash ID</span>
+              <span class="cl-value cl-mono" id="adminConsentHash">#A9F3K28</span>
+            </div>
+            <div class="compliance-log-row">
+              <span class="cl-label">EDD Escalation</span>
+              <span class="cl-value" id="adminEddStatus">None</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- VCIP Control Panel (New Pillar) -->
+        <div class="dist-chart" style="border-color:var(--color-primary);background:var(--color-primary-bg)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+            <h3 style="color:var(--color-primary);margin:0">👨‍💼 Assisted VCIP Control</h3>
+            <span class="card-badge" style="background:var(--color-white)">Agent Role: Active</span>
+          </div>
+          <div class="toggle-group" id="vcipToggle">
+            <button class="toggle-btn" data-value="off">Self-Service Mode</button>
+            <button class="toggle-btn active" data-value="on">Assisted Session (VCIP)</button>
+          </div>
+          <div class="form-hint" style="margin-top:var(--space-2)">
+            Enables agent co-browsing, video, and F2F declaration capture.
+          </div>
+        </div>
+
+        <!-- System Architecture View -->
+        <div class="dist-chart">
+          <h3>🏗️ System Architecture & Data Flow</h3>
+          <div class="arch-flowchart">
+            <div class="arch-node user">Subscriber</div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-node portal">Onboarding Portal (PoP Layer)</div>
+            <div class="arch-connector">
+              <div class="arch-line"></div>
+              <div class="arch-line"></div>
+            </div>
+            <div class="arch-row">
+              <div class="arch-node api">Consent Engine<br><span class="api-endpoint">POST /consent-capture</span></div>
+              <div class="arch-node api">CKYCR / UIDAI API<br><span class="api-endpoint">GET /fetch-kyc</span></div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-node logic">Risk-Based Smart Path Engine<br><span class="api-endpoint">POST
+                /risk-evaluate</span></div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-node cra">CRA Core (NSDL/KFin)<br><span class="api-endpoint">POST /generate-pran</span>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-node db">Immutable Audit Vault<br><span class="log-ref">Log: ONB-2026...</span></div>
+          </div>
+          <div class="resp-matrix">
+            <div class="resp-row">
+              <span class="resp-role pop">PoP Responsibility</span>
+              <span>Identity, Consent, Risk Verification (F2F/VCIP)</span>
+            </div>
+            <div class="resp-row">
+              <span class="resp-role cra">CRA Responsibility</span>
+              <span>Recordkeeping, Fund Routing, PRAN Generation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PoP CKYC Compliance Console -->
+        <div class="dist-chart">
+          <h3>📅 PoP CKYC Compliance Console</h3>
+          <div class="ckyc-tracker">
+            <div class="tracker-header">
+              <span>Upload Deadline (10-Day Mandate)</span>
+              <span class="tracker-timer">9 days, 23 hrs remaining</span>
+            </div>
+            <div class="tracker-bar">
+              <div class="tracker-progress" style="width:5%"></div>
+            </div>
+            <div class="tracker-status-row">
+              <div class="ts-item">
+                <span class="ts-label">Current Status</span>
+                <span class="ts-value pending">Pending Upload</span>
+              </div>
+              <div class="ts-item">
+                <span class="ts-label">CRA Sync</span>
+                <span class="ts-value waiting">Awaiting PoP Action</span>
+              </div>
+              <div class="ts-item">
+                <span class="ts-label">Escalation</span>
+                <span class="ts-value normal">Normal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Impact Quantification -->
+        <div class="dist-chart">
+          <h3>📊 Impact Quantification</h3>
+          <div class="impact-grid">
+            <div class="impact-card">
+              <div class="impact-val">-61%</div>
+              <div class="impact-label">Decision Points</div>
+              <div class="impact-sub">18 → 7 steps</div>
+            </div>
+            <div class="impact-card">
+              <div class="impact-val">-70%</div>
+              <div class="impact-label">Manual Efficiency</div>
+              <div class="impact-sub">Fields Auto-filled</div>
+            </div>
+            <div class="impact-card">
+              <div class="impact-val">100%</div>
+              <div class="impact-label">Compliance</div>
+              <div class="impact-sub">CKYC Uploads</div>
+            </div>
+            <div class="impact-card">
+              <div class="impact-val">-40%</div>
+              <div class="impact-label">PoP Workload</div>
+              <div class="impact-sub">Risk-Tagging</div>
+            </div>
+          </div>
+          <div class="form-hint" style="text-align:center;margin-top:var(--space-3)">
+            *Projected impact based on operational clustering analysis vs current SRF baseline.
+          </div>
+        </div>
+
+        <button class="btn btn-secondary btn-block" id="btnBackFromAdmin">← Back to Onboarding</button>
+      </section>
+
+    </main>
+
+    <!-- ===== BOTTOM CTA ===== -->
+    <div class="bottom-cta" id="bottomCta">
+      <div class="bottom-cta-inner">
+        <button class="btn btn-secondary" id="btnBack" style="display:none" data-i18n="back">← Back</button>
+        <button class="btn btn-primary btn-block btn-lg" id="btnContinue" data-i18n="continue">Continue</button>
+      </div>
+      <button class="btn-save-resume" id="btnSaveResume" data-i18n="saveAndResume">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" width="14" height="14">
+          <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+          <polyline points="17 21 17 13 7 13 7 21" />
+          <polyline points="7 3 7 8 15 8" />
+        </svg>
+        Save &amp; Resume Later
+      </button>
+    </div>
+
+    <!-- ===== ADMIN TOGGLE ===== -->
+    <button class="admin-toggle" id="adminToggle" title="Admin Dashboard" aria-label="Open Admin Dashboard">⚙️</button>
+
+    <!-- ===== LOADING SPINNER ===== -->
+    <div class="spinner-overlay" id="spinner">
+      <div class="spinner-box">
+        <div class="spinner"></div>
+        <p id="spinnerText">Fetching your verified details...</p>
+      </div>
+    </div>
+
+    <!-- ===== SAVE CONFIRMATION TOAST ===== -->
+    <div class="toast" id="toast">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+        stroke-linejoin="round" width="18" height="18">
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
+      <span id="toastText">Progress saved! You can resume anytime.</span>
+    </div>
+
+  </div>
+
+  <!-- ===== VOICE ASSISTANT FAB ===== -->
+  <button class="voice-fab" id="voiceFab" title="NPS Voice Assistant" aria-label="Open Voice Assistant">
+    🎤
+    <div class="voice-fab-badge">AI</div>
+  </button>
+
+  <!-- ===== VOICE / CHATBOT PANEL ===== -->
+  <div class="voice-panel" id="voicePanel">
+    <div class="voice-panel-header">
+      <div class="vp-avatar">🤖</div>
+      <div class="vp-info">
+        <strong>NPS Assistant</strong>
+        <span>Powered by AI • Speaks your language</span>
+      </div>
+      <button class="voice-panel-close" id="voicePanelClose">✕</button>
+    </div>
+    <div class="voice-panel-body" id="chatBody">
+      <div class="chat-msg bot">
+        👋 Hello! I'm your NPS Assistant. Ask me anything about pensions, KYC, or investing.
+        <div class="chat-quick-actions">
+          <button class="chat-quick-btn" onclick="askBot('What is NPS?')">What is NPS?</button>
+          <button class="chat-quick-btn" onclick="askBot('How to open account?')">Open Account</button>
+          <button class="chat-quick-btn" onclick="askBot('What are tax benefits?')">Tax Benefits</button>
+          <button class="chat-quick-btn" onclick="askBot('What is PRAN?')">What is PRAN?</button>
+          <button class="chat-quick-btn" onclick="askBot('Minimum contribution?')">Min Amount?</button>
+        </div>
+      </div>
+    </div>
+    <div class="voice-panel-footer">
+      <input type="text" id="chatInput" placeholder="Type or speak your question..." autocomplete="off">
+      <button class="voice-btn-mic" id="btnVoiceMic" title="Speak">🎤</button>
+      <button class="voice-btn-send" id="btnChatSend" title="Send">➤</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

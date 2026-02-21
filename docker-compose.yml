@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  nps-onboarding:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend/logs:/app/backend/logs
+    restart: always

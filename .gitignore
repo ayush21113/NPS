@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+backend/logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Mobile / Capacitor
+node_modules/
+android/
+ios/
+www/
+capacitor.config.ts.js
+package-lock.json
+
+# Temporary / Drafts
+doc1_output.txt
+doc2_output.txt
+sys_logs.txt
+*.docx
+*.pdf
+methodology.md

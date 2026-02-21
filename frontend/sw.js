@@ -1,0 +1,26 @@
+const CACHE_NAME = 'nps-onboarding-v1';
+const ASSETS = [
+    '/',
+    '/index.html',
+    '/style.css',
+    '/app.js',
+    '/manifest.json'
+];
+
+// Install Event
+self.addEventListener('install', (e) => {
+    e.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(ASSETS);
+        })
+    );
+});
+
+// Fetch Event
+self.addEventListener('fetch', (e) => {
+    e.respondWith(
+        caches.match(e.request).then((res) => {
+            return res || fetch(e.request);
+        })
+    );
+});
