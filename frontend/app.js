@@ -2100,8 +2100,7 @@ function updateRiskUI(riskLevel, reasons = []) {
     }
   }
 
-  // Admin Dashboard Sync
-  updateAdminRiskUI(riskLevel, reasons);
+  // Admin dashboard removed — no-op
 }
 
 // Deprecated client-side computation for compliance
@@ -2111,6 +2110,10 @@ function computeRiskScore() {
 
 function updateRiskEscalation() {
   // Logic moved to backend. Frontend only refreshes from session if needed.
+}
+
+function updateAdminRiskUI() {
+  // Admin dashboard removed — no-op
 }
 
 /* ================================================================
@@ -2126,92 +2129,6 @@ function showToast(msg) {
   t.classList.add('visible');
   setTimeout(() => t.classList.remove('visible'), 3000);
 }
-
-/* ================================================================
-   ADMIN DASHBOARD
-   ================================================================ */
-$('#adminToggle').addEventListener('click', () => {
-  $$('.phase-screen').forEach((s) => s.classList.remove('active'));
-  $('#adminDashboard').classList.add('active');
-  bottomCta.style.display = 'none';
-  $('#topBar').style.display = 'none';
-
-  // Populate live audit trail
-  const now = new Date();
-  const pad = (n) => String(n).padStart(2, '0');
-  const logId = `ONB-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}`;
-  $('#adminLogId').textContent = logId;
-  $('#adminTimestamp').textContent = now.toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
-  const hash = '#' + Math.random().toString(36).substring(2, 8).toUpperCase();
-  $('#adminConsentHash').textContent = hash;
-
-  // Run updates
-  computeRiskScore();
-  animateImpactMetrics();
-});
-
-function updateAdminRiskUI(level, reasons) {
-  const riskEl = $('#adminRisk');
-  const eddEl = $('#adminEddStatus');
-
-  if (level === 'High') {
-    riskEl.textContent = 'High Risk — EDD Required';
-    riskEl.className = 'cl-value cl-danger';
-    eddEl.textContent = 'Triggered — ' + (reasons.join(', ') || 'PEP/Tax');
-    eddEl.className = 'cl-value cl-danger';
-  } else if (level === 'Medium') {
-    riskEl.textContent = 'Medium Risk';
-    riskEl.className = 'cl-value cl-scheduled'; // Amber
-    eddEl.textContent = 'Enhanced Review';
-    eddEl.className = 'cl-value cl-scheduled';
-  } else {
-    riskEl.textContent = 'Standard (Low Risk)';
-    riskEl.className = 'cl-value cl-standard';
-    eddEl.textContent = 'None';
-    eddEl.className = 'cl-value';
-  }
-}
-
-function animateImpactMetrics() {
-  $$('.impact-val').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(10px)';
-    setTimeout(() => {
-      el.style.transition = 'all 0.5s ease';
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }, 200 + Math.random() * 300);
-  });
-}
-
-// VCIP Toggle
-$('#vcipToggle').addEventListener('click', (e) => {
-  const btn = e.target.closest('.toggle-btn');
-  if (!btn) return;
-  $$('#vcipToggle .toggle-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  const mode = btn.dataset.value;
-  state.vcipMode = (mode === 'on');
-
-  // Update UI
-  const banner = $('#vcipBanner');
-  if (state.vcipMode) {
-    banner.classList.add('visible');
-  } else {
-    banner.classList.remove('visible');
-  }
-
-  // Update Risk
-  computeRiskScore();
-});
-
-$('#btnBackFromAdmin').addEventListener('click', () => {
-  $$('.phase-screen').forEach((s) => s.classList.remove('active'));
-  phases[state.currentPhase]?.classList.add('active');
-  bottomCta.style.display = '';
-  $('#topBar').style.display = '';
-});
 
 /* ================================================================
    TOOLTIPS (click-to-toggle on mobile)
