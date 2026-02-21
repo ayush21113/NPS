@@ -43,7 +43,7 @@ class OnboardingAPI {
     // If local, use localhost.
     this.baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:8000'
-      : 'https://nps-onboarding-server.render.com'; // Replace with your live URL
+      : 'https://nps-e0t6.onrender.com'; // Actual Render Deployment
   }
 
   getHeaders(isMultipart = false) {
