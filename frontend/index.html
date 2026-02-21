@@ -1203,15 +1203,8 @@
       <button class="voice-panel-close" id="voicePanelClose">✕</button>
     </div>
     <div class="voice-panel-body" id="chatBody">
-      <div class="chat-msg bot">
-        👋 Hello! I'm your NPS Assistant. Ask me anything about pensions, KYC, or investing.
-        <div class="chat-quick-actions">
-          <button class="chat-quick-btn" onclick="askBot('What is NPS?')">What is NPS?</button>
-          <button class="chat-quick-btn" onclick="askBot('How to open account?')">Open Account</button>
-          <button class="chat-quick-btn" onclick="askBot('What are tax benefits?')">Tax Benefits</button>
-          <button class="chat-quick-btn" onclick="askBot('What is PRAN?')">What is PRAN?</button>
-          <button class="chat-quick-btn" onclick="askBot('Minimum contribution?')">Min Amount?</button>
-        </div>
+      <div class="chat-msg bot" id="chatWelcome">
+        <!-- Populated by JS based on language -->
       </div>
     </div>
     <div class="voice-panel-footer">
@@ -1221,7 +1214,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 
 </html>
