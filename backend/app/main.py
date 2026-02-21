@@ -112,6 +112,8 @@ def deep_health():
         "database": "connected" if db_ok else "disconnected",
         "ai_ocr": "available" if settings.GEMINI_API_KEY else "unavailable",
         "uptime_seconds": round(time.time() - BOOT_TIME, 1),
+        "frontend_dir": str(FRONTEND_DIR),
+        "frontend_exists": FRONTEND_DIR.exists(),
     }
 
 
