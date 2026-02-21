@@ -131,7 +131,7 @@ class OnboardingAPI {
           session_id: state.sessionId,
           consent_type: consentType,
           consent_text: consentText,
-          metadata
+          additional_data: metadata
         })
       });
       return await res.json();

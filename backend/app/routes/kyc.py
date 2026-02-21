@@ -45,7 +45,7 @@ def archive_consent(
         consent_type=payload.consent_type,
         consent_text=payload.consent_text,
         request_info=request_info,
-        metadata=payload.metadata
+        metadata=payload.additional_data
     )
     
     return {"success": True, "artifact_id": artifact.id, "hash": artifact.artifact_hash}

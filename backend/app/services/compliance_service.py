@@ -38,7 +38,7 @@ class ComplianceService:
             ip_address=req.get("ip"),
             user_agent=req.get("user_agent"),
             artifact_hash=artifact_hash,
-            metadata=metadata or {}
+            additional_data=metadata or {}
         )
         
         db.add(artifact)

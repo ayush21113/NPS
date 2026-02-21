@@ -161,7 +161,7 @@ class ConsentArchiveRequest(BaseModel):
     session_id: str
     consent_type: str
     consent_text: str
-    metadata: Optional[Dict] = None
+    additional_data: Optional[Dict] = None
 
 
 # ──────────────── Generic ────────────────

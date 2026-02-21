@@ -62,4 +62,4 @@ class ConsentArtifact(Base):
     user_agent = Column(String(256))
     
     artifact_hash = Column(String(64))  # Integrity verification
-    metadata = Column(JSON, default=dict) # e.g., mobile number, email used
+    additional_data = Column(JSON, default=dict) # e.g., mobile number, email used
