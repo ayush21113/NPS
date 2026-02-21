@@ -41,21 +41,6 @@
       "purpose": "maskable"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "Resume Onboarding",
-      "short_name": "Resume",
-      "description": "Jump back into your saved session",
-      "url": "/?action=resume",
-      "icons": [
-        {
-          "src": "shortcut_resume.svg",
-          "sizes": "192x192",
-          "type": "image/svg+xml"
-        }
-      ]
-    }
-  ],
   "screenshots": [
     {
       "src": "https://raw.githubusercontent.com/ayush21113/NPS/main/frontend/screenshot.png",
@@ -64,5 +49,6 @@
       "form_factor": "narrow",
       "label": "NPS Home Screen"
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
