@@ -114,6 +114,7 @@ def deep_health():
         "uptime_seconds": round(time.time() - BOOT_TIME, 1),
         "frontend_dir": str(FRONTEND_DIR),
         "frontend_exists": FRONTEND_DIR.exists(),
+        "version": "1.0.2",
     }
 
 
