@@ -3,7 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+
+# Environment / Secrets (CRITICAL — never commit)
 .env
+backend/.env
+*.env
+*.env.*
+
+# Signing keys (CRITICAL — never commit)
+*.keystore
+*.jks
+signing-key-info.txt
 
 # Database
 *.db
@@ -25,6 +35,14 @@ www/
 capacitor.config.ts.js
 package-lock.json
 
+# Build artifacts
+*.apk
+*.aab
+*.msix
+*.msixbundle
+*.appxbundle
+NPS App/
+
 # Temporary / Drafts
 doc1_output.txt
 doc2_output.txt
@@ -32,3 +50,5 @@ sys_logs.txt
 *.docx
 *.pdf
 methodology.md
+Readme.html
+assetlinks.json
