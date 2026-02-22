@@ -4,5 +4,6 @@ from app.routes.payment import router as payment_router
 from app.routes.esign import router as esign_router
 from app.routes.admin import router as admin_router
 from app.routes.notification import router as notification_router
+from app.routes.pop import router as pop_router
 
-__all__ = ["session_router", "kyc_router", "payment_router", "esign_router", "admin_router", "notification_router"]
+__all__ = ["session_router", "kyc_router", "payment_router", "esign_router", "admin_router", "notification_router", "pop_router"]

@@ -2873,3 +2873,261 @@ window.handleAltChannel = async function (type) {
       break;
   }
 };
+
+
+/* ================================================================
+   POP AGENT SYSTEM — Login, Dashboard, Assisted Mode
+   ================================================================ */
+(function initPopAgentSystem() {
+  // State
+  let popAgent = JSON.parse(localStorage.getItem('nps_pop_agent') || 'null');
+  let popToken = localStorage.getItem('nps_pop_token') || '';
+
+  // Elements
+  const btnPopLogin = $('#btnPopLogin');
+  const popLoginOverlay = $('#popLoginOverlay');
+  const popLoginClose = $('#popLoginClose');
+  const popAgentIdInput = $('#popAgentId');
+  const popAgentPinInput = $('#popAgentPin');
+  const btnPopSubmit = $('#btnPopSubmit');
+  const popLoginError = $('#popLoginError');
+  const popLoginErrorText = $('#popLoginErrorText');
+  const popDashboard = $('#popDashboard');
+  const popDashClose = $('#popDashClose');
+  const popStatusBar = $('#popStatusBar');
+  const btnPopOpenDash = $('#btnPopOpenDash');
+  const btnPopStartOnboarding = $('#btnPopStartOnboarding');
+  const btnPopLogout = $('#btnPopLogout');
+
+  if (!btnPopLogin) return; // Safety check
+
+  // ─── Open Login Overlay ───────────────────────────────────────
+  btnPopLogin.addEventListener('click', () => {
+    popLoginOverlay.classList.add('visible');
+    popAgentIdInput.focus();
+  });
+
+  popLoginClose.addEventListener('click', () => {
+    popLoginOverlay.classList.remove('visible');
+    popLoginError.style.display = 'none';
+  });
+
+  // Close on backdrop click
+  popLoginOverlay.addEventListener('click', (e) => {
+    if (e.target === popLoginOverlay) {
+      popLoginOverlay.classList.remove('visible');
+    }
+  });
+
+  // ─── Demo Credential Tags ────────────────────────────────────
+  document.querySelectorAll('.pop-demo-tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      popAgentIdInput.value = tag.dataset.agent;
+      popAgentPinInput.value = tag.dataset.pin;
+      popAgentIdInput.dispatchEvent(new Event('input'));
+      popAgentPinInput.dispatchEvent(new Event('input'));
+    });
+  });
+
+  // ─── Login Submit ─────────────────────────────────────────────
+  btnPopSubmit.addEventListener('click', async () => {
+    const agentId = popAgentIdInput.value.trim().toUpperCase();
+    const pin = popAgentPinInput.value.trim();
+
+    if (!agentId || !pin) {
+      showPopError('Please enter both Agent ID and PIN.');
+      return;
+    }
+
+    // Show loading
+    $('#popSubmitText').style.display = 'none';
+    $('#popSubmitSpinner').style.display = 'inline';
+    btnPopSubmit.disabled = true;
+    popLoginError.style.display = 'none';
+
+    try {
+      const res = await fetch(`${api.baseUrl}/api/pop/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agent_id: agentId, pin: pin })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || 'Authentication failed');
+      }
+
+      const data = await res.json();
+      popAgent = data.agent;
+      popToken = data.token;
+
+      // Persist
+      localStorage.setItem('nps_pop_agent', JSON.stringify(popAgent));
+      localStorage.setItem('nps_pop_token', popToken);
+
+      // Close login, open dashboard
+      popLoginOverlay.classList.remove('visible');
+      activateAssistedMode();
+      openDashboard();
+
+    } catch (err) {
+      showPopError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      $('#popSubmitText').style.display = 'inline';
+      $('#popSubmitSpinner').style.display = 'none';
+      btnPopSubmit.disabled = false;
+    }
+  });
+
+  // Enter key on PIN field
+  popAgentPinInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') btnPopSubmit.click();
+  });
+
+  function showPopError(msg) {
+    popLoginErrorText.textContent = msg;
+    popLoginError.style.display = 'flex';
+  }
+
+  // ─── Activate Assisted Mode ────────────────────────────────────
+  function activateAssistedMode() {
+    if (!popAgent) return;
+
+    // Show VCIP banner
+    const vcipBanner = $('#vcipBanner');
+    if (vcipBanner) {
+      vcipBanner.style.display = 'flex';
+      // Update banner text with agent info
+      const nameSpan = vcipBanner.querySelector('span[data-i18n="popAssisting"]');
+      if (nameSpan) nameSpan.textContent = `${popAgent.name} (${popAgent.organization}) is assisting`;
+    }
+
+    // Show floating status bar
+    $('#popStatusAgent').textContent = `${popAgent.name} · ${popAgent.organization}`;
+    popStatusBar.classList.add('visible');
+
+    // Update state
+    state.vcipMode = true;
+
+    // Tag current session if exists
+    tagCurrentSession();
+  }
+
+  // ─── Tag Session to Agent ──────────────────────────────────────
+  async function tagCurrentSession() {
+    if (!popAgent || !state.sessionId) return;
+    try {
+      await fetch(`${api.baseUrl}/api/pop/tag-session?session_id=${state.sessionId}&agent_id=${popAgent.agent_id}`, {
+        method: 'POST'
+      });
+    } catch (e) {
+      console.warn('Session tagging (non-blocking):', e);
+    }
+  }
+
+  // ─── Open Dashboard ───────────────────────────────────────────
+  function openDashboard() {
+    if (!popAgent) return;
+
+    // Populate header
+    $('#popDashAvatar').textContent = popAgent.photo_initials;
+    $('#popDashName').textContent = popAgent.name;
+    $('#popDashOrg').textContent = `${popAgent.role} · ${popAgent.organization}`;
+    $('#popDashPopId').textContent = popAgent.pop_id;
+    $('#popDashRegNo').textContent = popAgent.registration_no;
+    $('#popDashTier').textContent = popAgent.tier.charAt(0).toUpperCase() + popAgent.tier.slice(1);
+
+    popDashboard.classList.add('visible');
+
+    // Fetch stats from API
+    fetchDashboardData();
+  }
+
+  async function fetchDashboardData() {
+    try {
+      const res = await fetch(`${api.baseUrl}/api/pop/dashboard/${popAgent.agent_id}`);
+      if (!res.ok) throw new Error('Dashboard fetch failed');
+      const data = await res.json();
+
+      // Update stats
+      $('#popStatTotal').textContent = data.stats.total_sessions;
+      $('#popStatCompleted').textContent = data.stats.completed;
+      $('#popStatActive').textContent = data.stats.in_progress;
+      $('#popStatRate').textContent = data.stats.success_rate + '%';
+
+      // Update commission
+      $('#popCommRate').textContent = '₹' + data.commission.rate_per_enrollment;
+      $('#popCommTotal').textContent = '₹' + data.commission.total_earned.toLocaleString('en-IN');
+      $('#popCommPending').textContent = '₹' + data.commission.pending_payout.toLocaleString('en-IN');
+      $('#popCommLastDate').textContent = data.commission.last_payout_date;
+
+      // Update recent sessions
+      const list = $('#popRecentList');
+      if (data.recent_sessions.length === 0) {
+        list.innerHTML = '<div class="pop-recent-empty">No sessions yet. Start onboarding a subscriber!</div>';
+      } else {
+        list.innerHTML = data.recent_sessions.map(s => {
+          const statusClass = s.status === 'completed' ? 'completed' : (s.status === 'started' ? 'active' : 'pending');
+          const time = s.created_at ? new Date(s.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—';
+          return `<div class="pop-recent-item">
+            <div class="pop-recent-item-left">
+              <strong>${s.pran || s.session_id}</strong>
+              <span>${s.kyc_method.toUpperCase()} · ${time}</span>
+            </div>
+            <span class="pop-recent-status ${statusClass}">${s.status}</span>
+          </div>`;
+        }).join('');
+      }
+
+    } catch (e) {
+      console.warn('Dashboard data fetch (non-blocking):', e);
+      // Show placeholder stats for demo
+      $('#popStatTotal').textContent = '—';
+      $('#popStatCompleted').textContent = '—';
+      $('#popStatActive').textContent = '—';
+      $('#popStatRate').textContent = '—';
+    }
+  }
+
+  // ─── Dashboard Controls ────────────────────────────────────────
+  popDashClose.addEventListener('click', () => {
+    popDashboard.classList.remove('visible');
+  });
+
+  btnPopOpenDash.addEventListener('click', () => {
+    openDashboard();
+  });
+
+  btnPopStartOnboarding.addEventListener('click', () => {
+    popDashboard.classList.remove('visible');
+    // Go to language selection with assisted mode active
+    const langOverlay = $('#langOverlay');
+    if (langOverlay) langOverlay.classList.add('visible');
+  });
+
+  // ─── Logout ────────────────────────────────────────────────────
+  btnPopLogout.addEventListener('click', () => {
+    popAgent = null;
+    popToken = '';
+    localStorage.removeItem('nps_pop_agent');
+    localStorage.removeItem('nps_pop_token');
+
+    // Hide everything
+    popDashboard.classList.remove('visible');
+    popStatusBar.classList.remove('visible');
+    state.vcipMode = false;
+
+    const vcipBanner = $('#vcipBanner');
+    if (vcipBanner) vcipBanner.style.display = 'none';
+
+    // Return to language screen
+    const langOverlay = $('#langOverlay');
+    if (langOverlay) langOverlay.classList.add('visible');
+  });
+
+  // ─── Auto-restore on page load ─────────────────────────────────
+  if (popAgent && popToken) {
+    activateAssistedMode();
+  }
+
+})();

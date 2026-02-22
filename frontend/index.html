@@ -73,6 +73,151 @@
           style="width: auto; white-space: nowrap;">Resume</button>
       </div>
     </div>
+    <!-- PoP Agent Entry Point -->
+    <div class="pop-entry" id="popEntry">
+      <button class="pop-entry-btn" id="btnPopLogin">
+        <span class="pop-entry-icon">🏛️</span>
+        <span>I'm a PoP Agent / Bank Official</span>
+        <span class="pop-entry-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== POP AGENT LOGIN OVERLAY ===== -->
+  <div class="pop-login-overlay" id="popLoginOverlay">
+    <div class="pop-login-card">
+      <button class="pop-login-close" id="popLoginClose">✕</button>
+      <div class="pop-login-header">
+        <div class="pop-login-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <h2>PoP Agent Portal</h2>
+        <p>Login to assist NPS subscribers with their onboarding</p>
+      </div>
+      <div class="pop-login-body">
+        <div class="form-group">
+          <label class="form-label">Agent ID <span class="tag-required">(Required)</span></label>
+          <input type="text" class="form-input pop-input" id="popAgentId" placeholder="e.g. SBI-2024-001"
+            style="text-transform: uppercase;" autocomplete="off">
+          <div class="form-hint">Issued by your organization (Bank / CSC / India Post)</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">PIN <span class="tag-required">(Required)</span></label>
+          <input type="password" class="form-input pop-input" id="popAgentPin" placeholder="4-digit PIN" maxlength="4"
+            inputmode="numeric" autocomplete="off">
+        </div>
+        <div class="pop-login-error" id="popLoginError" style="display:none;">
+          <span>⚠️</span> <span id="popLoginErrorText">Invalid credentials</span>
+        </div>
+        <button class="btn btn-primary pop-login-submit" id="btnPopSubmit">
+          <span id="popSubmitText">Sign In as PoP Agent</span>
+          <span id="popSubmitSpinner" style="display:none;">Authenticating...</span>
+        </button>
+      </div>
+      <div class="pop-login-footer">
+        <div class="pop-login-demo">
+          <strong>Demo Credentials:</strong>
+          <div class="pop-demo-grid">
+            <span class="pop-demo-tag" data-agent="SBI-2024-001" data-pin="1234">SBI Agent</span>
+            <span class="pop-demo-tag" data-agent="HDFC-2024-005" data-pin="5678">HDFC Manager</span>
+            <span class="pop-demo-tag" data-agent="CSC-2024-012" data-pin="9012">CSC Operator</span>
+            <span class="pop-demo-tag" data-agent="POST-2024-008" data-pin="3456">India Post</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== POP AGENT DASHBOARD PANEL ===== -->
+  <div class="pop-dashboard" id="popDashboard">
+    <div class="pop-dash-header">
+      <div class="pop-dash-profile">
+        <div class="pop-dash-avatar" id="popDashAvatar">RK</div>
+        <div class="pop-dash-info">
+          <strong id="popDashName">Agent Name</strong>
+          <span id="popDashOrg">Organization</span>
+        </div>
+      </div>
+      <button class="pop-dash-close" id="popDashClose">✕</button>
+    </div>
+    <div class="pop-dash-meta">
+      <div class="pop-meta-chip" id="popDashPopId">POP-ID</div>
+      <div class="pop-meta-chip" id="popDashRegNo">PFRDA/POP/...</div>
+      <div class="pop-meta-chip pop-tier" id="popDashTier">Platinum</div>
+    </div>
+    <div class="pop-dash-body">
+      <!-- Stats Grid -->
+      <div class="pop-stats-grid">
+        <div class="pop-stat-card">
+          <div class="pop-stat-value" id="popStatTotal">0</div>
+          <div class="pop-stat-label">Total Enrollments</div>
+        </div>
+        <div class="pop-stat-card completed">
+          <div class="pop-stat-value" id="popStatCompleted">0</div>
+          <div class="pop-stat-label">Completed</div>
+        </div>
+        <div class="pop-stat-card active">
+          <div class="pop-stat-value" id="popStatActive">0</div>
+          <div class="pop-stat-label">In Progress</div>
+        </div>
+        <div class="pop-stat-card rate">
+          <div class="pop-stat-value" id="popStatRate">0%</div>
+          <div class="pop-stat-label">Success Rate</div>
+        </div>
+      </div>
+      <!-- Commission Section -->
+      <div class="pop-commission">
+        <h4>💰 Commission Tracker</h4>
+        <div class="pop-commission-grid">
+          <div class="pop-comm-item">
+            <span class="pop-comm-label">Rate per Enrollment</span>
+            <span class="pop-comm-value" id="popCommRate">₹50</span>
+          </div>
+          <div class="pop-comm-item total">
+            <span class="pop-comm-label">Total Earned</span>
+            <span class="pop-comm-value" id="popCommTotal">₹0</span>
+          </div>
+          <div class="pop-comm-item">
+            <span class="pop-comm-label">Pending Payout</span>
+            <span class="pop-comm-value" id="popCommPending">₹0</span>
+          </div>
+          <div class="pop-comm-item">
+            <span class="pop-comm-label">Last Payout</span>
+            <span class="pop-comm-value" id="popCommLastDate">—</span>
+          </div>
+        </div>
+      </div>
+      <!-- Recent Sessions -->
+      <div class="pop-recent">
+        <h4>📋 Recent Onboardings</h4>
+        <div class="pop-recent-list" id="popRecentList">
+          <div class="pop-recent-empty">No sessions yet. Start onboarding a subscriber!</div>
+        </div>
+      </div>
+    </div>
+    <div class="pop-dash-footer">
+      <button class="btn btn-primary" id="btnPopStartOnboarding" style="width:100%;">
+        ➕ Start New Subscriber Onboarding
+      </button>
+      <button class="btn btn-secondary pop-logout-btn" id="btnPopLogout" style="width:100%; margin-top: 0.5rem;">
+        Sign Out
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== POP AGENT STATUS BAR (floating, visible during assisted onboarding) ===== -->
+  <div class="pop-status-bar" id="popStatusBar">
+    <div class="pop-status-inner">
+      <div class="pop-status-indicator"></div>
+      <span class="pop-status-text">
+        <strong>Assisted Mode</strong> — <span id="popStatusAgent">PoP Agent</span>
+      </span>
+      <button class="pop-status-dash-btn" id="btnPopOpenDash" title="Open Dashboard">📊</button>
+    </div>
   </div>
 
   <div class="app-container" id="app">

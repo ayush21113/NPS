@@ -16,7 +16,7 @@ from fastapi.responses import FileResponse
 
 from app.config import get_settings
 from app.database import init_db
-from app.routes import session_router, kyc_router, payment_router, esign_router, admin_router, notification_router
+from app.routes import session_router, kyc_router, payment_router, esign_router, admin_router, notification_router, pop_router
 
 settings = get_settings()
 
@@ -91,6 +91,7 @@ app.include_router(payment_router)
 app.include_router(esign_router)
 app.include_router(admin_router)
 app.include_router(notification_router)
+app.include_router(pop_router)
 
 
 @app.get("/health", tags=["Health"])

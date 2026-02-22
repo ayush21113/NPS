@@ -31,6 +31,7 @@ class UserSession(Base):
     contribution_amount = Column(Integer, default=0)
 
     pran = Column(String(20))
+    pop_agent_id = Column(String(32), nullable=True, index=True)  # PoP agent attribution
 
     data = Column(JSON, default=dict)   # Stores all captured profile data
 

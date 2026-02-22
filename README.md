@@ -213,4 +213,23 @@ SESSION_EXPIRY_MINUTES=30
 | Offline Mode Detection | ✅ | UPI Innovations Doc |
 | Hash-chained Tamper-evident Audit Trail | ✅ | PFRDA Compliance |
 | Regulator Dashboard & Analytics | ✅ | Architecture Spec |
-| Multi-language Support (EN, HI, GU, TA, TE) | ✅ | Tier-2/3 Inclusion |
+| Multi-language Support (EN, HI, GU, TA, TE, KN, OR) | ✅ | Tier-2/3 Inclusion |
+| **PoP Agent Portal (Login, Dashboard, Commission)** | ✅ | **NPS Architecture** |
+| **Assisted Onboarding Mode (VCIP)** | ✅ | **PFRDA Compliance** |
+| **Session Attribution & PoP Performance Metrics** | ✅ | **NPS Architecture** |
+
+### PoP Agent API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/pop/login` | Authenticate PoP agent (Agent ID + PIN) |
+| `GET`  | `/api/pop/dashboard/{agent_id}` | Agent stats, commission, recent sessions |
+| `POST` | `/api/pop/tag-session` | Tag onboarding session to PoP agent |
+
+**Demo PoP Agents:**
+| Agent ID | PIN | Organization |
+|----------|-----|-------------|
+| `SBI-2024-001` | `1234` | State Bank of India |
+| `HDFC-2024-005` | `5678` | HDFC Bank |
+| `CSC-2024-012` | `9012` | Common Service Centre |
+| `POST-2024-008` | `3456` | India Post |
