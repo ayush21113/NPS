@@ -1,4 +1,4 @@
-/* ===== NPS Digital Onboarding — Design System & Styles ===== */
+﻿/* ===== NPS Digital Onboarding â€” Design System & Styles ===== */
 
 /* --- Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Gujarati:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Sans+Oriya:wght@400;700&display=swap');
@@ -1008,7 +1008,7 @@ a {
 }
 
 .consent-summary ul li::before {
-  content: '•';
+  content: 'â€¢';
   color: var(--color-primary);
   font-weight: 700;
   flex-shrink: 0;
@@ -2536,7 +2536,7 @@ select:focus:not(:focus-visible) {
 }
 
 /* ================================================================
-   NEW FEATURES — Voice, Chatbot, UPI, Trust, DigiLocker, e-Sign
+   NEW FEATURES â€” Voice, Chatbot, UPI, Trust, DigiLocker, e-Sign
    ================================================================ */
 
 /* --- Trust Cues Regulatory Bar --- */
@@ -3357,7 +3357,7 @@ select:focus:not(:focus-visible) {
 
 
 /* ===============================================================
-   POP AGENT SYSTEM — Login • Dashboard • Status Bar
+   POP AGENT SYSTEM â€” Login â€¢ Dashboard â€¢ Status Bar (Light Theme)
    =============================================================== */
 
 /* --- PoP Entry Button (on language selector) --- */
@@ -3366,35 +3366,43 @@ select:focus:not(:focus-visible) {
   padding: 0 1rem;
   text-align: center;
 }
+
 .pop-entry-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  color: #a0b4d4;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
   padding: 0.65rem 1.2rem;
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
   max-width: 400px;
   justify-content: center;
 }
+
 .pop-entry-btn:hover {
-  background: linear-gradient(135deg, #16213e, #0f3460);
-  color: #e0e8f4;
-  border-color: rgba(255,255,255,0.15);
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(15, 52, 96, 0.3);
+  box-shadow: 0 4px 16px var(--color-shadow-lg);
 }
-.pop-entry-icon { font-size: 1.1rem; }
+
+.pop-entry-icon {
+  font-size: 1.1rem;
+}
+
 .pop-entry-arrow {
   margin-left: auto;
   opacity: 0.5;
   transition: transform 0.2s;
 }
+
 .pop-entry-btn:hover .pop-entry-arrow {
   transform: translateX(3px);
   opacity: 1;
@@ -3405,7 +3413,7 @@ select:focus:not(:focus-visible) {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--color-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -3416,13 +3424,15 @@ select:focus:not(:focus-visible) {
   transition: opacity 0.35s ease;
   padding: 1rem;
 }
+
 .pop-login-overlay.visible {
   opacity: 1;
   pointer-events: all;
 }
+
 .pop-login-card {
-  background: #0f1724;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   width: 100%;
   max-width: 420px;
@@ -3430,21 +3440,23 @@ select:focus:not(:focus-visible) {
   position: relative;
   transform: translateY(30px) scale(0.95);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
 }
+
 .pop-login-overlay.visible .pop-login-card {
   transform: translateY(0) scale(1);
 }
+
 .pop-login-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
   background: none;
   border: none;
-  color: #6b7b99;
+  color: var(--color-text-muted);
   font-size: 1.2rem;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
   width: 32px;
   height: 32px;
   display: flex;
@@ -3452,102 +3464,108 @@ select:focus:not(:focus-visible) {
   justify-content: center;
   border-radius: 50%;
 }
+
 .pop-login-close:hover {
-  color: white;
-  background: rgba(255,255,255,0.1);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
 }
+
 .pop-login-header {
   text-align: center;
   margin-bottom: 1.5rem;
 }
+
 .pop-login-badge {
   width: 56px;
   height: 56px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #0B3D91, #1A5BC4);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1rem;
   color: white;
-  box-shadow: 0 4px 20px rgba(11, 61, 145, 0.4);
+  box-shadow: 0 4px 20px rgba(11, 61, 145, 0.25);
 }
+
 .pop-login-header h2 {
-  color: #e8edf5;
+  color: var(--color-text-primary);
   font-size: 1.3rem;
   margin-bottom: 0.4rem;
 }
+
 .pop-login-header p {
-  color: #6b7b99;
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
 }
+
 .pop-login-body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.pop-input {
-  background: #1a2338 !important;
-  border-color: rgba(255,255,255,0.1) !important;
-  color: #e0e8f4 !important;
+
+.pop-login-body .form-label {
+  color: var(--color-text-primary);
 }
-.pop-input:focus {
-  border-color: var(--color-primary-light) !important;
-  box-shadow: 0 0 0 3px rgba(26, 91, 196, 0.2) !important;
-}
-.pop-input::placeholder {
-  color: #4a5a78 !important;
-}
+
 .pop-login-error {
-  background: rgba(220, 38, 38, 0.1);
-  border: 1px solid rgba(220, 38, 38, 0.3);
+  background: var(--color-error-bg);
+  border: 1px solid rgba(217, 48, 37, 0.2);
   border-radius: var(--radius-md);
   padding: 0.6rem 0.8rem;
-  color: #fca5a5;
+  color: var(--color-error);
   font-size: var(--font-size-sm);
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
+
 .pop-login-submit {
   margin-top: 0.5rem;
   height: 48px;
   font-size: 1rem;
   font-weight: 600;
 }
+
 .pop-login-footer {
   margin-top: 1.5rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--color-border-light);
   padding-top: 1rem;
 }
+
 .pop-login-demo strong {
   display: block;
   font-size: var(--font-size-xs);
-  color: #6b7b99;
+  color: var(--color-text-muted);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
 .pop-demo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.4rem;
 }
+
 .pop-demo-tag {
-  background: rgba(26, 91, 196, 0.12);
-  color: #7ba8e0;
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
   padding: 0.35rem 0.6rem;
   border-radius: var(--radius-sm);
   font-size: var(--font-size-xs);
+  font-weight: 500;
   cursor: pointer;
   text-align: center;
   transition: all 0.2s;
   border: 1px solid transparent;
 }
+
 .pop-demo-tag:hover {
-  background: rgba(26, 91, 196, 0.25);
-  border-color: rgba(26, 91, 196, 0.4);
-  color: #a5c5f0;
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
 }
 
 /* --- PoP Dashboard Panel --- */
@@ -3558,35 +3576,39 @@ select:focus:not(:focus-visible) {
   width: 400px;
   max-width: 100vw;
   height: 100vh;
-  background: #0c1220;
-  border-left: 1px solid rgba(255,255,255,0.06);
+  background: var(--color-white);
+  border-left: 1px solid var(--color-border);
   z-index: 10001;
   display: flex;
   flex-direction: column;
   transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.4);
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.08);
   overflow-y: auto;
 }
+
 .pop-dashboard.visible {
   right: 0;
 }
+
 .pop-dash-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.2rem 1.2rem 0.8rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid var(--color-border-light);
 }
+
 .pop-dash-profile {
   display: flex;
   align-items: center;
   gap: 0.8rem;
 }
+
 .pop-dash-avatar {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #0B3D91, #1A5BC4);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: white;
   display: flex;
   align-items: center;
@@ -3595,22 +3617,26 @@ select:focus:not(:focus-visible) {
   font-size: 0.95rem;
   letter-spacing: 0.5px;
 }
+
 .pop-dash-info {
   display: flex;
   flex-direction: column;
 }
+
 .pop-dash-info strong {
-  color: #e0e8f4;
+  color: var(--color-text-primary);
   font-size: 0.95rem;
 }
+
 .pop-dash-info span {
-  color: #6b7b99;
+  color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
+
 .pop-dash-close {
   background: none;
   border: none;
-  color: #6b7b99;
+  color: var(--color-text-muted);
   font-size: 1.2rem;
   cursor: pointer;
   width: 36px;
@@ -3621,31 +3647,38 @@ select:focus:not(:focus-visible) {
   border-radius: 50%;
   transition: all 0.2s;
 }
+
 .pop-dash-close:hover {
-  color: white;
-  background: rgba(255,255,255,0.1);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
 }
+
 .pop-dash-meta {
   display: flex;
   gap: 0.4rem;
   padding: 0.8rem 1.2rem;
   flex-wrap: wrap;
 }
+
 .pop-meta-chip {
-  background: rgba(255,255,255,0.05);
-  color: #6b7b99;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
   padding: 0.25rem 0.6rem;
   border-radius: 20px;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.3px;
+  border: 1px solid var(--color-border-light);
 }
+
 .pop-meta-chip.pop-tier {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
-  color: #fbbf24;
+  background: var(--color-warning-bg);
+  color: #b45309;
   font-weight: 700;
   text-transform: uppercase;
+  border-color: rgba(245, 166, 35, 0.3);
 }
+
 .pop-dash-body {
   padding: 1rem 1.2rem;
   flex: 1;
@@ -3659,66 +3692,84 @@ select:focus:not(:focus-visible) {
   gap: 0.6rem;
   margin-bottom: 1.2rem;
 }
+
 .pop-stat-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
   padding: 0.8rem;
   text-align: center;
 }
+
 .pop-stat-value {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #e0e8f4;
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
 }
+
 .pop-stat-label {
   font-size: 10px;
-  color: #6b7b99;
+  color: var(--color-text-muted);
   margin-top: 0.2rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.pop-stat-card.completed .pop-stat-value { color: #34d399; }
-.pop-stat-card.active .pop-stat-value { color: #60a5fa; }
-.pop-stat-card.rate .pop-stat-value { color: #fbbf24; }
+
+.pop-stat-card.completed .pop-stat-value {
+  color: var(--color-accent);
+}
+
+.pop-stat-card.active .pop-stat-value {
+  color: var(--color-primary-light);
+}
+
+.pop-stat-card.rate .pop-stat-value {
+  color: #b45309;
+}
 
 /* Commission */
 .pop-commission {
-  background: rgba(245, 158, 11, 0.05);
-  border: 1px solid rgba(245, 158, 11, 0.12);
+  background: var(--color-warning-bg);
+  border: 1px solid rgba(245, 166, 35, 0.2);
   border-radius: var(--radius-md);
   padding: 0.8rem;
   margin-bottom: 1.2rem;
 }
+
 .pop-commission h4 {
-  color: #fbbf24;
+  color: #92400e;
   font-size: var(--font-size-sm);
   margin-bottom: 0.6rem;
 }
+
 .pop-commission-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
 }
+
 .pop-comm-item {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
 }
+
 .pop-comm-label {
   font-size: 10px;
-  color: #6b7b99;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
+
 .pop-comm-value {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #e0e8f4;
+  color: var(--color-text-primary);
 }
+
 .pop-comm-item.total .pop-comm-value {
-  color: #34d399;
+  color: var(--color-accent);
   font-size: 1.1rem;
 }
 
@@ -3726,11 +3777,13 @@ select:focus:not(:focus-visible) {
 .pop-recent {
   margin-bottom: 1rem;
 }
+
 .pop-recent h4 {
-  color: #a0b4d4;
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   margin-bottom: 0.6rem;
 }
+
 .pop-recent-list {
   display: flex;
   flex-direction: column;
@@ -3738,28 +3791,33 @@ select:focus:not(:focus-visible) {
   max-height: 200px;
   overflow-y: auto;
 }
+
 .pop-recent-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.05);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-sm);
   padding: 0.5rem 0.7rem;
   font-size: var(--font-size-xs);
 }
+
 .pop-recent-item-left {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
 }
+
 .pop-recent-item-left strong {
-  color: #a0b4d4;
+  color: var(--color-text-primary);
 }
+
 .pop-recent-item-left span {
-  color: #4a5a78;
+  color: var(--color-text-muted);
   font-size: 10px;
 }
+
 .pop-recent-status {
   padding: 0.15rem 0.5rem;
   border-radius: 20px;
@@ -3768,36 +3826,42 @@ select:focus:not(:focus-visible) {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
 .pop-recent-status.completed {
-  background: rgba(52, 211, 153, 0.12);
-  color: #34d399;
+  background: var(--color-success-bg);
+  color: var(--color-accent);
 }
+
 .pop-recent-status.active {
-  background: rgba(96, 165, 250, 0.12);
-  color: #60a5fa;
+  background: var(--color-info-bg);
+  color: var(--color-primary);
 }
+
 .pop-recent-status.pending {
-  background: rgba(251, 191, 36, 0.12);
-  color: #fbbf24;
+  background: var(--color-warning-bg);
+  color: #92400e;
 }
+
 .pop-recent-empty {
   text-align: center;
-  color: #4a5a78;
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
   padding: 1.5rem 0;
 }
 
 .pop-dash-footer {
   padding: 1rem 1.2rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--color-border-light);
 }
+
 .pop-logout-btn {
   background: transparent !important;
-  border-color: rgba(220, 38, 38, 0.3) !important;
-  color: #f87171 !important;
+  border-color: rgba(217, 48, 37, 0.3) !important;
+  color: var(--color-error) !important;
 }
+
 .pop-logout-btn:hover {
-  background: rgba(220, 38, 38, 0.1) !important;
+  background: var(--color-error-bg) !important;
 }
 
 /* --- PoP Status Bar (floating top bar during assisted mode) --- */
@@ -3809,39 +3873,52 @@ select:focus:not(:focus-visible) {
   z-index: 9999;
   transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .pop-status-bar.visible {
   top: 8px;
 }
+
 .pop-status-inner {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: linear-gradient(135deg, #0B3D91, #16213e);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
   padding: 0.4rem 0.8rem 0.4rem 0.6rem;
   border-radius: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px var(--color-shadow-lg);
   font-size: var(--font-size-xs);
-  color: #a0b4d4;
+  color: var(--color-text-secondary);
   white-space: nowrap;
 }
+
 .pop-status-indicator {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+  background: var(--color-accent);
+  box-shadow: 0 0 6px rgba(15, 169, 88, 0.5);
   animation: pop-pulse 2s infinite;
 }
+
 @keyframes pop-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
 }
+
 .pop-status-text strong {
-  color: #e0e8f4;
+  color: var(--color-primary);
 }
+
 .pop-status-dash-btn {
-  background: rgba(255,255,255,0.1);
+  background: var(--color-primary-bg);
   border: none;
   width: 28px;
   height: 28px;
@@ -3853,8 +3930,10 @@ select:focus:not(:focus-visible) {
   font-size: 14px;
   transition: background 0.2s;
 }
+
 .pop-status-dash-btn:hover {
-  background: rgba(255,255,255,0.2);
+  background: var(--color-primary);
+  color: white;
 }
 
 /* --- Mobile Adjustments for PoP --- */
@@ -3863,6 +3942,7 @@ select:focus:not(:focus-visible) {
     width: 100vw;
     right: -100vw;
   }
+
   .pop-login-card {
     padding: 1.5rem;
   }
